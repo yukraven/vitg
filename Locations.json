@@ -1,0 +1,13 @@
+{
+    "summer" :
+    {
+        "description" : "Summer meadow. Many flowers and butterflies.",
+        "expectedCommands" :
+        [
+            "run",
+            "jump",
+            "laugh"
+        ],
+        "weather" : 1
+    }
+}
