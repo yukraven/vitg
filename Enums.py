@@ -1,8 +1,8 @@
 from enum import Enum
 
-class Wthr(Enum):
-    clear = 1
-    cloudy = 2
-    rain = 3
-    thunderstorm = 4
-    snow = 5
+
+class DFall(Enum):
+    none = 1
+    rain = 2
+    hail = 3
+    snow = 4
