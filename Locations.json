@@ -1,6 +1,7 @@
 {
     "summer" :
     {
+        "startDescription" : "starting",
         "description" : "Summer meadow. Many flowers and butterflies.",
         "expectedCommands" :
         [
@@ -8,6 +9,13 @@
             "jump",
             "laugh"
         ],
-        "weather" : 1
+        "weather" :
+        {
+            "downFall" : 1,
+            "wind" : 1,
+            "wet" : 1,
+            "temperature" : 1,
+            "thunder" : false
+        }
     }
 }
