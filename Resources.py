@@ -1,3 +1,18 @@
+import random
+
+
+def getRandFromMass(mass):
+    temp = 0
+    resultMass = []
+    for i in mass:
+        temp += i
+        resultMass.append(temp)
+    randomValue = random.randint(1, 100)
+    for i in range(len(resultMass)):
+        if randomValue <= resultMass[i]:
+            return i
+
+
 class Resource:
     startDescription = ""
     description = ""
@@ -27,11 +42,13 @@ class Resource:
 class Location(Resource):
     weather = {}
     weatherChances = {}
+    weatherChanging = {}
 
-    def __init__(self, startDescription, description, expectedCommands, weather, weatherChances):
+    def __init__(self, startDescription, description, expectedCommands, weather, weatherChances, weatherChanging):
         Resource.__init__(self, startDescription, description, expectedCommands)
         self.weather = weather
         self.weatherChances = weatherChances
+        self.weatherChanging = weatherChanging
 
     def __repr__(self):
         result = Resource.__repr__(self)
@@ -46,4 +63,18 @@ class Location(Resource):
         return result
 
     def __call__(self):
-        return True
+        result = ""
+        result += self.__changeDownfall()
+        return result
+
+    def __changeDownfall(self):
+        result = ""
+        downfall = self.weatherChances["downfall"]
+        for state in downfall:
+            if self.weather["downfall"] == int(state):
+                newDownfall = getRandFromMass(downfall[state]) + 1
+                if self.weather["downfall"] == newDownfall:
+                    return ""
+                oldDownfall = self.weather["downfall"]
+                self.weather["downfall"] = newDownfall
+                return self.weatherChanging["downfall"][str(oldDownfall)][newDownfall - 1]

@@ -6,9 +6,6 @@ LocJs = json.load(open("Locations.json"))
 for i in LocJs:
     temp = LocJs[i]
     location = R.Location(temp["startDescription"], temp["description"], temp["expectedCommands"],
-                          temp["weather"])
-    print(repr(location))
-    print(location)
-    print(location.getHi())
-
-
+                          temp["weather"], temp["weatherChances"], temp["weatherChanging"])
+    for i in range(1, 31):
+        print(("Location step %d: " % i) + location())

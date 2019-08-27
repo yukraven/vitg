@@ -11,7 +11,7 @@
         ],
         "weather" :
         {
-            "downFall" : 1,
+            "downfall" : 1,
             "wind" : 1,
             "wet" : 1,
             "temperature" : 1,
@@ -19,26 +19,36 @@
         },
         "weatherChances" :
         {
-            "downFall" :
+            "downfall" :
             {
-                "1" : [0.5, 0.4, 0.1, 0],
-                "2" : [0.2, 0.5, 0.2, 0.1],
-                "3" : [0.1, 0.2, 0.5, 0.2],
-                "4" : [0, 0.1, 0.4, 0.5]
+                "1" : [50, 40, 10, 0],
+                "2" : [20, 50, 20, 10],
+                "3" : [10, 20, 50, 20],
+                "4" : [0, 10, 40, 50]
             },
             "wind" :
             {
-                "0" : [0, 0.1, 0.2, 0.4, 0.2, 0.1, 0]
+                "0" : [0, 10, 20, 40, 20, 10, 0]
             },
             "wet" :
             {
-                "0" : [0, 0, 0, 1, 0, 0, 0]
+                "0" : [0, 0, 0, 100, 0, 0, 0]
             },
             "temperature" :
             {
-                "0" : [0, 0, 0, 1, 0, 0, 0]
+                "0" : [0, 0, 0, 100, 0, 0, 0]
             },
             "thunder" : 0.3
+        },
+        "weatherChanging" :
+        {
+            "downfall" :
+            {
+                "1" : ["", "Rain is coming.", "Hail began.", "It started snowing."],
+                "2" : ["Rain stopped.", "", "Rain gave way to hail.", "Drops became snow."],
+                "3" : ["Hail stopped.", "Hail gave way to rain.", "", "Ice became snow."],
+                "4" : ["Snow stopped.", "Snow gave way to rain.", "Snow gave way to hail.", ""]
+            }
         }
     }
 }
