@@ -1,44 +1,49 @@
-from Enums import DFall
-
-
 class Resource:
-    __startDescription = ""
-    __description = ""
-    __expectedCommands = []
+    startDescription = ""
+    description = ""
+    expectedCommands = []
 
     def __init__(self, startDescription, description, expectedCommands):
-        self.__startDescription = startDescription
-        self.__description = description
-        self.__expectedCommands = expectedCommands
+        self.startDescription = startDescription
+        self.description = description
+        self.expectedCommands = expectedCommands
 
     def __repr__(self):
-        result = self.__startDescription
-        result += " " + self.__description
-        result += " Commands:"
-        for i in self.__expectedCommands:
+        result = self.startDescription
+        result += " | " + self.description
+        result += " | Commands:"
+        for i in self.expectedCommands:
             result += " "
             result += i
         return result
 
     def __str__(self):
-        return self.__description
+        return self.description
 
     def getHi(self):
-        return self.__startDescription
+        return self.startDescription
 
 
-class Location:
-    __weather = {}
+class Location(Resource):
+    weather = {}
+    weatherChances = {}
 
-    def __init__(self, description, expectedCommands, weather):
-        Resource.__init__(self, description, expectedCommands)
-        self.__weather = weather
+    def __init__(self, startDescription, description, expectedCommands, weather, weatherChances):
+        Resource.__init__(self, startDescription, description, expectedCommands)
+        self.weather = weather
+        self.weatherChances = weatherChances
 
     def __repr__(self):
         result = Resource.__repr__(self)
-        # result += ". Weather: "
-        # result += str(self.__weather)
+        result += " | Weather:"
+        for i in self.weather:
+            result += " "
+            result += str(self.weather[i])
+        result += " | Weather chances:"
+        for i in self.weatherChances:
+            result += " "
+            result += str(self.weatherChances[i])
         return result
 
-    def __str__(self):
-        return Resource.__str__(self)
+    def __call__(self):
+        return True
