@@ -14,6 +14,17 @@ def getRandFromArray(array):
             return i
 
 
+getModByIndex = {
+    "0": -30,
+    "1": -20,
+    "2": -10,
+    "3": 0,
+    "4": 10,
+    "5": 20,
+    "6": 30
+}
+
+
 class Resource:
     """ Base class for all objects in the game """
     startDescription = ""                   # Description that used to represent the object for the first time
@@ -64,7 +75,10 @@ class Location(Resource):
     weatherChanging = {"downfall": {"0": ["", "", "", ""],
                                     "1": ["", "", "", ""],
                                     "2": ["", "", "", ""],
-                                    "3": ["", "", "", ""]}}             # string messages for transitions
+                                    "3": ["", "", "", ""]},
+                       "wind": {"0": "", "1": "", "2": "",
+                                "3": "",
+                                "4": "", "5": "", "6": ""}}             # string messages for transitions
 
     def __init__(self, startDescription, description, expectedCommands, weather, weatherChances, weatherChanging):
         """ Initialization """
@@ -89,10 +103,13 @@ class Location(Resource):
     def __call__(self):
         """ Makes a turn, changes its condition, mostly weather, returns string information about it, else - "" """
         result = ""
-        result += self.__changeDownfall()
+        result += self._changeDownfall()
+        result += self._changeAtmosphere("wind")
+        result += self._changeAtmosphere("wet")
+        result += self._changeAtmosphere("temperature")
         return result
 
-    def __changeDownfall(self):
+    def _changeDownfall(self):
         """ Changes downfall, returns string information, if changed, else - "" """
         chances = self.weatherChances["downfall"]
         for state in chances:
@@ -103,3 +120,21 @@ class Location(Resource):
                 oldDownfall = self.weather["downfall"]
                 self.weather["downfall"] = newDownfall
                 return self.weatherChanging["downfall"][str(oldDownfall)][newDownfall]
+
+    def _changeAtmosphere(self, element):
+        """ Changes wind, wet or temperature, if changed returns string information, else - "" """
+        chances = self.weatherChances[element]
+        curState = self.weather[element]
+        for state in chances:
+            if curState >= int(state):
+                indexOfMod = getRandFromArray(chances[state])
+                result = self.weatherChanging[element][str(indexOfMod)]
+                curState += getModByIndex[str(indexOfMod)]
+                if curState < 0:
+                    curState = 0
+                    result = ""
+                elif curState > 100:
+                    curState = 100
+                    result = ""
+                self.weather[element] = curState
+                return result
