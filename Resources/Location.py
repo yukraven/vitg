@@ -26,9 +26,15 @@ class Location(Resource):
                                     "1": ["", "", "", ""],
                                     "2": ["", "", "", ""],
                                     "3": ["", "", "", ""]},
-                       "wind": {"0": "", "1": "", "2": "",
-                                "3": "",
-                                "4": "", "5": "", "6": ""}}             # string messages for transitions
+                       "wind":        {"0": "", "1": "", "2": "",
+                                       "3": "",
+                                       "4": "", "5": "", "6": ""},
+                       "wet":         {"0": "", "1": "", "2": "",
+                                       "3": "",
+                                       "4": "", "5": "", "6": ""},
+                       "temperature": {"0": "", "1": "", "2": "",
+                                       "3": "",
+                                       "4": "", "5": "", "6": ""}}             # string messages for transitions
 
     def __init__(self, startDescription, description, expectedCommands, weather, weatherChances, weatherChanging):
         """ Initialization """
@@ -40,11 +46,11 @@ class Location(Resource):
     def __repr__(self):
         """ Complements the information by adding about weather and weather chances """
         result = Resource.__repr__(self)
-        result += " | Weather:"
+        result += " | "
         for i in self.weather:
             result += " "
             result += str(self.weather[i])
-        result += " | Weather chances:"
+        result += " | "
         for i in self.weatherChances:
             result += " "
             result += str(self.weatherChances[i])

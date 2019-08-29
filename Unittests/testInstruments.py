@@ -1,5 +1,5 @@
-import unittest
 import Exceptions
+import unittest
 from Instruments import getRandFromArray
 
 

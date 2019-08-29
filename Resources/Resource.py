@@ -14,7 +14,7 @@ class Resource:
         """ Returns string information about the all properties of object """
         result = self.startDescription
         result += " | " + self.description
-        result += " | Commands:"
+        result += " | "
         for i in self.expectedCommands:
             result += " "
             result += i
