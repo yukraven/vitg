@@ -108,9 +108,9 @@ class Location(Resource):
         """ Makes a turn, changes its condition, mostly weather, returns string information about it, else - "" """
         result = ""
         result += self._changeDownfall()
-        result += self._changeAtmosphere("wind")
-        result += self._changeAtmosphere("wet")
-        result += self._changeAtmosphere("temperature")
+        result += self._changeAtmosphere("wind", "random")
+        result += self._changeAtmosphere("wet", "random")
+        result += self._changeAtmosphere("temperature", "random")
         return result
 
     def _changeDownfall(self):
@@ -125,15 +125,17 @@ class Location(Resource):
                 self.weather["downfall"] = newDownfall
                 return self.weatherChanging["downfall"][str(oldDownfall)][newDownfall]
 
-    def _changeAtmosphere(self, element):
+    def _changeAtmosphere(self, element, value):
         """ Changes wind, wet or temperature, if changed returns string information, else - "" """
         chances = self.weatherChances[element]
         curState = self.weather[element]
         for state in chances:
             if curState >= int(state):
-                indexOfMod = getRandFromArray(chances[state])
+                if value == "random":
+                    indexOfMod = getRandFromArray(chances[state])
+                    value = getModByIndex[str(indexOfMod)]
                 result = self.weatherChanging[element][str(indexOfMod)]
-                curState += getModByIndex[str(indexOfMod)]
+                curState += value
                 if curState < 0:
                     curState = 0
                     result = ""
@@ -143,6 +145,37 @@ class Location(Resource):
                 self.weather[element] = curState
                 return result
 
-    def tryRain(self):
+    def _tryRain(self):
         """ Try change downfall for rain, changes wet, return new state """
-        if self.weather["tempAndDownfall"]
+        temperatureFor = self.weatherChances["tempAndDownfall"]
+        temperature = self.weather["temperature"]
+        if temperature <= temperatureFor["rainFreezes"]:
+            newState = self._tryHail()
+        elif temperature >= temperatureFor["rainEvaporates"]:
+            newState = 0                    # Clear
+        else:
+            self._changeAtmosphere("wet", -30)
+            newState = 1                    # Rain
+        return newState
+
+    def _tryHail(self):
+        """ Try change downfall for hail, changes temperature, return new state """
+        temperatureFor = self.weatherChances["tempAndDownfall"]
+        temperature = self.weather["temperature"]
+        if temperature >= temperatureFor["hailMelts"]:
+            newState = self._tryRain()
+        else:
+            self._changeAtmosphere("temperature", -5)
+            newState = 2                    # Hail
+        return newState
+
+    def _trySnow(self):
+        """ Try change downfall for snow, shanges temperature, return new state """
+        temperatureFor = self.weatherChances["tempAndDownfall"]
+        temperature = self.weather["temperature"]
+        if temperature >= temperatureFor["snowMelts"]:
+            newState = self._tryRain()
+        else:
+            self._changeAtmosphere("temperature", -10)
+            newState = 3                    # Snow
+        return newState
