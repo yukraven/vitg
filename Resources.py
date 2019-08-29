@@ -15,13 +15,13 @@ def getRandFromArray(array):
 
 
 getModByIndex = {
-    "0": -30,
-    "1": -20,
-    "2": -10,
-    "3": 0,
-    "4": 10,
-    "5": 20,
-    "6": 30
+    0: -30,
+    1: -20,
+    2: -10,
+    3: 0,
+    4: 10,
+    5: 20,
+    6: 30
 }
 
 
@@ -68,10 +68,10 @@ class Location(Resource):
                                    "1": [0, 100, 0, 0],                 # transitions 1->0, 1->1, 1->2, 1->3
                                    "2": [0, 0, 100, 0],                 # transitions 2->0, 2->1, 2->2, 2->3
                                    "3": [0, 0, 0, 100]},                # transitions 3->0, 3->1, 3->2, 3->3
-                      "tempAndDownfall" : {"rainFreezes": 45,
-                                           "rainEvaporates": 80,
-                                           "snowMelts": 55,
-                                           "hailMelts": 60},            # Temperature affecting downfall
+                      "tempAndDownfall": {"rainFreezes": 45,
+                                          "rainEvaporates": 80,
+                                          "snowMelts": 55,
+                                          "hailMelts": 60},             # Temperature affecting downfall
                       "wind": {"0": [0, 0, 0, 100, 0, 0, 0]},           # mod -30, -20, -10, 0, +10, +20, +30
                       "wet": {"0": [0, 0, 0, 100, 0, 0, 0]},            # mod -30, -20, -10, 0, +10, +20, +30
                       "temperature": {"0": [0, 0, 0, 100, 0, 0, 0]},    # mod -30, -20, -10, 0, +10, +20, +30
@@ -118,24 +118,25 @@ class Location(Resource):
         chances = self.weatherChances["downfall"]
         for state in chances:
             if self.weather["downfall"] == int(state):
-                newDownfall = getRandFromArray(chances[state])
+                newDownfall = self._tryChangeDownfall[getRandFromArray(chances[state])](self)
                 if self.weather["downfall"] == newDownfall:             # if nothing changed
                     return ""
                 oldDownfall = self.weather["downfall"]
                 self.weather["downfall"] = newDownfall
                 return self.weatherChanging["downfall"][str(oldDownfall)][newDownfall]
 
-    def _changeAtmosphere(self, element, value):
+    def _changeAtmosphere(self, element, index):
         """ Changes wind, wet or temperature, if changed returns string information, else - "" """
         chances = self.weatherChances[element]
         curState = self.weather[element]
         for state in chances:
             if curState >= int(state):
-                if value == "random":
+                if index == "random":
                     indexOfMod = getRandFromArray(chances[state])
-                    value = getModByIndex[str(indexOfMod)]
+                else:
+                    indexOfMod = index
                 result = self.weatherChanging[element][str(indexOfMod)]
-                curState += value
+                curState += getModByIndex[indexOfMod]
                 if curState < 0:
                     curState = 0
                     result = ""
@@ -154,7 +155,7 @@ class Location(Resource):
         elif temperature >= temperatureFor["rainEvaporates"]:
             newState = 0                    # Clear
         else:
-            self._changeAtmosphere("wet", -30)
+            self._changeAtmosphere("wet", 6)                            # +30
             newState = 1                    # Rain
         return newState
 
@@ -165,17 +166,24 @@ class Location(Resource):
         if temperature >= temperatureFor["hailMelts"]:
             newState = self._tryRain()
         else:
-            self._changeAtmosphere("temperature", -5)
+            self._changeAtmosphere("temperature", 2)                    # -10
             newState = 2                    # Hail
         return newState
 
     def _trySnow(self):
-        """ Try change downfall for snow, shanges temperature, return new state """
+        """ Try change downfall for snow, changes temperature, return new state """
         temperatureFor = self.weatherChances["tempAndDownfall"]
         temperature = self.weather["temperature"]
         if temperature >= temperatureFor["snowMelts"]:
             newState = self._tryRain()
         else:
-            self._changeAtmosphere("temperature", -10)
+            self._changeAtmosphere("temperature", 2)                    # -10
             newState = 3                    # Snow
         return newState
+
+    _tryChangeDownfall = {
+        0: lambda self: 0,
+        1: _tryRain,
+        2: _tryHail,
+        3: _trySnow
+    }                                       # Switch for index - "try" method
