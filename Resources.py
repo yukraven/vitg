@@ -59,15 +59,19 @@ class Resource:
 class Location(Resource):
     # Current weather, can change every turn
     weather = {"downfall": 0,               # 0 - clear, 1 - rain, 2 - hail, 3 - snow
-               "wind": 0,                   # from 0 to 100
-               "wet": 0,                    # from 0 to 100
-               "temperature": 0,            # from 0 to 100
+               "wind": 0,                   # from 0 to 100 (1 points = 1 km/s)
+               "wet": 0,                    # from 0 to 100 (%)
+               "temperature": 0,            # from 0 to 100 (1 point = 2 degrees Celsius, 50 = 0)
                "thunder": False}            # does thunder sound in the current turn
     # Arrays of probabilities
     weatherChances = {"downfall": {"0": [100, 0, 0, 0],                 # transitions 0->0, 0->1, 0->2, 0->3
                                    "1": [0, 100, 0, 0],                 # transitions 1->0, 1->1, 1->2, 1->3
                                    "2": [0, 0, 100, 0],                 # transitions 2->0, 2->1, 2->2, 2->3
                                    "3": [0, 0, 0, 100]},                # transitions 3->0, 3->1, 3->2, 3->3
+                      "tempAndDownfall" : {"rainFreezes": 45,
+                                           "rainEvaporates": 80,
+                                           "snowMelts": 55,
+                                           "hailMelts": 60},            # Temperature affecting downfall
                       "wind": {"0": [0, 0, 0, 100, 0, 0, 0]},           # mod -30, -20, -10, 0, +10, +20, +30
                       "wet": {"0": [0, 0, 0, 100, 0, 0, 0]},            # mod -30, -20, -10, 0, +10, +20, +30
                       "temperature": {"0": [0, 0, 0, 100, 0, 0, 0]},    # mod -30, -20, -10, 0, +10, +20, +30
@@ -138,3 +142,7 @@ class Location(Resource):
                     result = ""
                 self.weather[element] = curState
                 return result
+
+    def tryRain(self):
+        """ Try change downfall for rain, changes wet, return new state """
+        if self.weather["tempAndDownfall"]
