@@ -1,8 +1,17 @@
 import random
+from Exceptions import ValueIsNotProbabilityError
 
 
 def getRandFromArray(array):
     """ Returns a random index from an array of probabilities """
+    if type(array) is not list:
+        raise TypeError
+    if len(array) == 0:
+        raise ValueError
+    for i in array:
+        if i < 0 or i > 100:
+            raise ValueIsNotProbabilityError(i)
+
     temp = 0
     resultArray = []
     for i in array:

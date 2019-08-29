@@ -1,8 +1,21 @@
 import unittest
+import Exceptions
 from Instruments import getRandFromArray
 
 
 class TestGetRandFromArray(unittest.TestCase):
+
+    def testEmptyArray(self):
+        with self.assertRaises(ValueError):
+            getRandFromArray([])
+
+    def testNotArray(self):
+        with self.assertRaises(TypeError):
+            getRandFromArray(7)
+
+    def testValueIsNotProb(self):
+        with self.assertRaises(Exceptions.ValueIsNotProbabilityError):
+            getRandFromArray([50, -10, 40])
 
     def testIndexInArray(self):
         self.assertIn(getRandFromArray([25, 25, 25, 25]), [0, 1, 2, 3])

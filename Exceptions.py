@@ -1,0 +1,2 @@
+class ValueIsNotProbabilityError(Exception):
+    pass
