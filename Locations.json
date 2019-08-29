@@ -13,8 +13,8 @@
         {
             "downfall" : 0,
             "wind" : 1,
-            "wet" : 1,
-            "temperature" : 1,
+            "wet" : 30,
+            "temperature" : 60,
             "thunder" : false
         },
         "weatherChances" :

@@ -1,59 +1,5 @@
-import random
-
-
-def getRandFromArray(array):
-    """ Returns a random index from an array of probabilities """
-    temp = 0
-    resultArray = []
-    for i in array:
-        temp += i
-        resultArray.append(temp)             # Converting of the array into a form convenient for calculation
-    randomValue = random.randint(1, 100)
-    for i in range(len(resultArray)):
-        if randomValue <= resultArray[i]:
-            return i
-
-
-getModByIndex = {
-    0: -30,
-    1: -20,
-    2: -10,
-    3: 0,
-    4: 10,
-    5: 20,
-    6: 30
-}
-
-
-class Resource:
-    """ Base class for all objects in the game """
-    startDescription = ""                   # Description that used to represent the object for the first time
-    description = ""                        # Current description that storing the state of the object
-    expectedCommands = []                   # Commands that should affect the object
-
-    def __init__(self, startDescription, description, expectedCommands):
-        """ Initialization """
-        self.startDescription = startDescription
-        self.description = description
-        self.expectedCommands = expectedCommands
-
-    def __repr__(self):
-        """ Returns string information about the all properties of object """
-        result = self.startDescription
-        result += " | " + self.description
-        result += " | Commands:"
-        for i in self.expectedCommands:
-            result += " "
-            result += i
-        return result
-
-    def __str__(self):
-        """ Returns current description """
-        return self.description
-
-    def getHi(self):
-        """ Returns initial description """
-        return self.startDescription
+from Instruments import getRandFromArray
+from Resources.Resource import Resource
 
 
 class Location(Resource):
@@ -136,7 +82,7 @@ class Location(Resource):
                 else:
                     indexOfMod = index
                 result = self.weatherChanging[element][str(indexOfMod)]
-                curState += getModByIndex[indexOfMod]
+                curState += self.getModByIndex[indexOfMod]
                 if curState < 0:
                     curState = 0
                     result = ""
@@ -153,6 +99,7 @@ class Location(Resource):
         if temperature <= temperatureFor["rainFreezes"]:
             newState = self._tryHail()
         elif temperature >= temperatureFor["rainEvaporates"]:
+            self._changeAtmosphere("wet", 6)                            # +30
             newState = 0                    # Clear
         else:
             self._changeAtmosphere("wet", 6)                            # +30
@@ -180,6 +127,16 @@ class Location(Resource):
             self._changeAtmosphere("temperature", 2)                    # -10
             newState = 3                    # Snow
         return newState
+
+    getModByIndex = {
+        0: -30,
+        1: -20,
+        2: -10,
+        3: 0,
+        4: 10,
+        5: 20,
+        6: 30
+    }                                       # For arrays of probabilities for wind, wet and temperature
 
     _tryChangeDownfall = {
         0: lambda self: 0,
