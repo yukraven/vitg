@@ -1,13 +1,20 @@
-import json
-import Resources.Location as L
+class Test:
+    someOption = 7
 
-LocJs = json.load(open("Locations.json"))
+    def __dir__(self):
+        return [self.someOption]
 
-for i in LocJs:
-    temp = LocJs[i]
-    location = L.Location(i, temp["startDescription"], temp["description"], temp["expectedCommands"],
-                          temp["weather"], temp["weatherChances"], temp["weatherChanging"])
-    print(repr(location))
-    for j in range(1, 31):
-        print(("Location step %d: " % j) + location())
+
+test = Test()
+print(test.someOption)
+
+test.someOption = 42
+print(test.someOption)
+
+someOtherOption = dir(test)[0]
+print(someOtherOption)
+
+someOtherOption = 90
+print(someOtherOption)
+print(test.someOption)
 
