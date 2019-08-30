@@ -5,7 +5,7 @@ LocJs = json.load(open("Locations.json"))
 
 for i in LocJs:
     temp = LocJs[i]
-    location = L.Location(temp["startDescription"], temp["description"], temp["expectedCommands"],
+    location = L.Location(i, temp["startDescription"], temp["description"], temp["expectedCommands"],
                           temp["weather"], temp["weatherChances"], temp["weatherChanging"])
     print(repr(location))
     for j in range(1, 31):

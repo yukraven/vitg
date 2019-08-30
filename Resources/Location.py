@@ -1,4 +1,4 @@
-from Instruments import getRandFromArray
+from Tools.Instruments import getRandFromArray
 from Resources.Resource import Resource
 
 
@@ -11,39 +11,39 @@ class Location(Resource):
                 "thunder": False}            # does thunder sound in the current turn
     # Arrays of probabilities
     _weatherChances = {"downfall": {"0": [100, 0, 0, 0],                 # transitions 0->0, 0->1, 0->2, 0->3
-                                   "1": [0, 100, 0, 0],                 # transitions 1->0, 1->1, 1->2, 1->3
-                                   "2": [0, 0, 100, 0],                 # transitions 2->0, 2->1, 2->2, 2->3
-                                   "3": [0, 0, 0, 100]},                # transitions 3->0, 3->1, 3->2, 3->3
-                      "tempAndDownfall": {"rainFreezes": 45,
-                                          "rainEvaporates": 80,
-                                          "snowMelts": 55,
-                                          "hailMelts": 60},             # Temperature affecting downfall
-                      "wind": {"0": [0, 0, 0, 100, 0, 0, 0]},           # mod -30, -20, -10, 0, +10, +20, +30
-                      "wet": {"0": [0, 0, 0, 100, 0, 0, 0]},            # mod -30, -20, -10, 0, +10, +20, +30
-                      "temperature": {"0": [0, 0, 0, 100, 0, 0, 0]},    # mod -30, -20, -10, 0, +10, +20, +30
-                      # Probability of thunder in one turn
-                      "thunder": {"0": {"wind": 0, "wet": 0, "temperature": 0, "probability": 0},
-                                  "1": {"wind": 30, "wet": 0, "temperature": 0, "probability": 50},
-                                  "2": {"wind": 0, "wet": 0, "temperature": 0, "probability": 0},
-                                  "3": {"wind": 0, "wet": 0, "temperature": 0, "probability": 0}}}
+                                    "1": [0, 100, 0, 0],                 # transitions 1->0, 1->1, 1->2, 1->3
+                                    "2": [0, 0, 100, 0],                 # transitions 2->0, 2->1, 2->2, 2->3
+                                    "3": [0, 0, 0, 100]},                # transitions 3->0, 3->1, 3->2, 3->3
+                       "tempAndDownfall": {"rainFreezes": 45,
+                                           "rainEvaporates": 80,
+                                           "snowMelts": 55,
+                                           "hailMelts": 60},             # Temperature affecting downfall
+                       "wind": {"0": [0, 0, 0, 100, 0, 0, 0]},           # mod -30, -20, -10, 0, +10, +20, +30
+                       "wet": {"0": [0, 0, 0, 100, 0, 0, 0]},            # mod -30, -20, -10, 0, +10, +20, +30
+                       "temperature": {"0": [0, 0, 0, 100, 0, 0, 0]},    # mod -30, -20, -10, 0, +10, +20, +30
+                       # Probability of thunder in one turn
+                       "thunder": {"0": {"wind": 0, "wet": 0, "temperature": 0, "probability": 0},
+                                   "1": {"wind": 30, "wet": 0, "temperature": 0, "probability": 50},
+                                   "2": {"wind": 0, "wet": 0, "temperature": 0, "probability": 0},
+                                   "3": {"wind": 0, "wet": 0, "temperature": 0, "probability": 0}}}
     _weatherChanging = {"downfall": {"0": ["", "", "", ""],
-                                    "1": ["", "", "", ""],
-                                    "2": ["", "", "", ""],
-                                    "3": ["", "", "", ""]},
-                       "wind":        {"0": "", "1": "", "2": "",
-                                       "3": "",
-                                       "4": "", "5": "", "6": ""},
-                       "wet":         {"0": "", "1": "", "2": "",
-                                       "3": "",
-                                       "4": "", "5": "", "6": ""},
-                       "temperature": {"0": "", "1": "", "2": "",
-                                       "3": "",
-                                       "4": "", "5": "", "6": ""},
-                       "thunder":     ""}                               # string messages for transitions
+                                     "1": ["", "", "", ""],
+                                     "2": ["", "", "", ""],
+                                     "3": ["", "", "", ""]},
+                        "wind":        {"0": "", "1": "", "2": "",
+                                        "3": "",
+                                        "4": "", "5": "", "6": ""},
+                        "wet":         {"0": "", "1": "", "2": "",
+                                        "3": "",
+                                        "4": "", "5": "", "6": ""},
+                        "temperature": {"0": "", "1": "", "2": "",
+                                        "3": "",
+                                        "4": "", "5": "", "6": ""},
+                        "thunder":     ""}                               # string messages for transitions
 
-    def __init__(self, startDescription, description, expectedCommands, weather, weatherChances, weatherChanging):
+    def __init__(self, name, startDescription, description, expectedCommands, weather, weatherChances, weatherChanging):
         """ Initialization """
-        Resource.__init__(self, startDescription, description, expectedCommands)
+        Resource.__init__(self, name, startDescription, description, expectedCommands)
         self._weather = weather
         self._weatherChances = weatherChances
         self._weatherChanging = weatherChanging
@@ -106,6 +106,7 @@ class Location(Resource):
 
     def _getThunder(self):
         """ Adds sound of thunder or not """
+        self._weather["thunder"] = False
         chances = self._weatherChances["thunder"][str(self._weather["downfall"])]
         prob = chances["probability"]
         if prob > 0:
@@ -113,6 +114,7 @@ class Location(Resource):
                 if self._weather[i] < chances[i]:
                     return ""
             if getRandFromArray([prob, 100-prob]) == 0:
+                self._weather["thunder"] = True
                 return self._weatherChanging["thunder"]
         return ""
 
