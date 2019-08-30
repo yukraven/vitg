@@ -21,7 +21,11 @@ class Location(Resource):
                       "wind": {"0": [0, 0, 0, 100, 0, 0, 0]},           # mod -30, -20, -10, 0, +10, +20, +30
                       "wet": {"0": [0, 0, 0, 100, 0, 0, 0]},            # mod -30, -20, -10, 0, +10, +20, +30
                       "temperature": {"0": [0, 0, 0, 100, 0, 0, 0]},    # mod -30, -20, -10, 0, +10, +20, +30
-                      "thunder": 30}        # Probability of thunder in one turn
+                      # Probability of thunder in one turn
+                      "thunder": {"0": {"wind": 0, "wet": 0, "temperature": 0, "probability": 0},
+                                  "1": {"wind": 30, "wet": 0, "temperature": 0, "probability": 50},
+                                  "2": {"wind": 0, "wet": 0, "temperature": 0, "probability": 0},
+                                  "3": {"wind": 0, "wet": 0, "temperature": 0, "probability": 0}}}
     weatherChanging = {"downfall": {"0": ["", "", "", ""],
                                     "1": ["", "", "", ""],
                                     "2": ["", "", "", ""],
@@ -34,7 +38,8 @@ class Location(Resource):
                                        "4": "", "5": "", "6": ""},
                        "temperature": {"0": "", "1": "", "2": "",
                                        "3": "",
-                                       "4": "", "5": "", "6": ""}}             # string messages for transitions
+                                       "4": "", "5": "", "6": ""},
+                       "thunder":     ""}                               # string messages for transitions
 
     def __init__(self, startDescription, description, expectedCommands, weather, weatherChances, weatherChanging):
         """ Initialization """
@@ -63,6 +68,7 @@ class Location(Resource):
         result += self._changeAtmosphere("wind", "random")
         result += self._changeAtmosphere("wet", "random")
         result += self._changeAtmosphere("temperature", "random")
+        result += self._getThunder()
         return result
 
     def _changeDownfall(self):
@@ -97,6 +103,18 @@ class Location(Resource):
                     result = ""
                 self.weather[element] = curState
                 return result
+
+    def _getThunder(self):
+        """ Adds sound of thunder or not """
+        chances = self.weatherChances["thunder"][str(self.weather["downfall"])]
+        prob = chances["probability"]
+        if prob > 0:
+            for i in ["wind", "wet", "temperature"]:
+                if self.weather[i] < chances[i]:
+                    return ""
+            if getRandFromArray([prob, 100-prob]) == 0:
+                return self.weatherChanging["thunder"]
+        return ""
 
     def _tryRain(self):
         """ Try change downfall for rain, changes wet, return new state """
