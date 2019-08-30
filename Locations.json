@@ -12,7 +12,7 @@
         "weather" :
         {
             "downfall" : 0,
-            "wind" : 1,
+            "wind" : 0,
             "wet" : 30,
             "temperature" : 60,
             "thunder" : false
