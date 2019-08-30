@@ -5,9 +5,7 @@
         "description" : "Current description. Varies with state.",
         "expectedCommands" :
         [
-            "command1",
-            "command2",
-            "command3"
+            "look_around"
         ],
         "weather" :
         {
