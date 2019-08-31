@@ -75,6 +75,9 @@ class Location(Resource):
 
         return result
 
+    def __str__(self):
+        return Resource.__str__(self)
+
     def __call__(self):
         """ Makes a turn, changes its condition, mostly weather, returns string information about it, else - "" """
         result = self.changeDFall()
