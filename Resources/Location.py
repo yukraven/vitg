@@ -64,14 +64,14 @@ class Location(Resource):
     def __call__(self):
         """ Makes a turn, changes its condition, mostly weather, returns string information about it, else - "" """
         result = ""
-        result += self._changeDownfall()
-        result += self._changeAtmosphere("wind", "random")
-        result += self._changeAtmosphere("wet", "random")
-        result += self._changeAtmosphere("temperature", "random")
+        result += self.changeDownfall()
+        result += self.changeAtmosphere("wind", "random")
+        result += self.changeAtmosphere("wet", "random")
+        result += self.changeAtmosphere("temperature", "random")
         result += self._getThunder()
         return result
 
-    def _changeDownfall(self):
+    def changeDownfall(self):
         """ Changes downfall, returns string information, if changed, else - "" """
         chances = self._weatherChances["downfall"]
         for state in chances:
@@ -83,7 +83,7 @@ class Location(Resource):
                 self._weather["downfall"] = newDownfall
                 return self._weatherChanging["downfall"][str(oldDownfall)][newDownfall]
 
-    def _changeAtmosphere(self, element, index):
+    def changeAtmosphere(self, element, index):
         """ Changes wind, wet or temperature, if changed returns string information, else - "" """
         chances = self._weatherChances[element]
         curState = self._weather[element]
@@ -125,10 +125,10 @@ class Location(Resource):
         if temperature <= temperatureFor["rainFreezes"]:
             newState = self._tryHail()
         elif temperature >= temperatureFor["rainEvaporates"]:
-            self._changeAtmosphere("wet", 6)                            # +30
+            self.changeAtmosphere("wet", 6)                            # +30
             newState = 0                    # Clear
         else:
-            self._changeAtmosphere("wet", 6)                            # +30
+            self.changeAtmosphere("wet", 6)                            # +30
             newState = 1                    # Rain
         return newState
 
@@ -139,7 +139,7 @@ class Location(Resource):
         if temperature >= temperatureFor["hailMelts"]:
             newState = self._tryRain()
         else:
-            self._changeAtmosphere("temperature", 2)                    # -10
+            self.changeAtmosphere("temperature", 2)                    # -10
             newState = 2                    # Hail
         return newState
 
