@@ -18,12 +18,12 @@
         "weatherChances" :
         {
             "downfall" :
-            {
-                "0" : [50, 40, 10, 0],
-                "1" : [20, 50, 20, 10],
-                "2" : [10, 20, 50, 20],
-                "3" : [0, 10, 40, 50]
-            },
+            [
+                [50, 40, 10, 0],
+                [20, 50, 20, 10],
+                [10, 20, 50, 20],
+                [0, 10, 40, 50]
+            ],
             "tempAndDownfall":
             {
                 "rainFreezes": 45,
@@ -44,79 +44,72 @@
                 "0" : [0, 10, 20, 40, 20, 10, 0]
             },
             "thunder" :
-            {
-                "0":
+            [
                 {
                     "wind": 0,
                     "wet": 0,
                     "temperature": 0,
                     "probability": 0
                 },
-
-                "1":
                 {
                     "wind": 30,
                     "wet": 0,
                     "temperature": 0,
                     "probability": 50
                 },
-
-                "2":
                 {
                     "wind": 0,
                     "wet": 0,
                     "temperature": 0,
                     "probability": 0
                 },
-
-                "3":
                 {
                     "wind": 0,
                     "wet": 0,
                     "temperature": 0,
                     "probability": 0
                 }
-            }
+            ]
         },
         "weatherChanging" :
         {
             "downfall" :
-            {
-                "0" : ["", "Rain is coming. ", "Hail began. ", "It started snowing. "],
-                "1" : ["Rain stopped. ", "", "Rain gave way to hail. ", "Drops became snow. "],
-                "2" : ["Hail stopped. ", "Hail gave way to rain. ", "", "Ice became snow. "],
-                "3" : ["Snow stopped. ", "Snow gave way to rain. ", "Snow gave way to hail. ", ""]
-            },
+            [
+                ["", "Rain is coming. ", "Hail began. ", "It started snowing. "],
+                ["Rain stopped. ", "", "Rain gave way to hail. ", "Drops became snow. "],
+                ["Hail stopped. ", "Hail gave way to rain. ", "", "Ice became snow. "],
+                ["Snow stopped. ", "Snow gave way to rain. ", "Snow gave way to hail. ", ""]
+            ],
             "wind" :
-            {
-                "0" : "The wind has lost power. ",
-                "1" : "The wind slowed down. ",
-                "2" : "The wind is a little verse. ",
-                "3" : "",
-                "4" : "The wind intensified. ",
-                "5" : "The wind gained strength. ",
-                "6" : "The wind gained great power. "
-            },
+            [
+                "The wind has lost power. ",
+                "The wind slowed down. ",
+                "The wind is a little verse. ",
+                "",
+                "The wind intensified. ",
+                "The wind gained strength. ",
+                "The wind gained great power. "
+            ],
             "wet" :
-            {
-                "0" : "Moisture becomes noticeably less. ",
-                "1" : "Less moisture is felt around. ",
-                "2" : "It has become drier. ",
-                "3" : "",
-                "4" : "Got wetter. ",
-                "5" : "There is more moisture in the air. ",
-                "6" : "Air turns to water. "
-            },
+            [
+                "Moisture becomes noticeably less. ",
+                "Less moisture is felt around. ",
+                "It has become drier. ",
+                "",
+                "Got wetter. ",
+                "There is more moisture in the air. ",
+                "Air turns to water. "
+            ],
             "temperature" :
-            {
-                "0" : "It got much colder. ",
-                "1" : "It got noticeably colder. ",
-                "2" : "It got colder. ",
-                "3" : "",
-                "4" : "Got warmer. ",
-                "5" : "It has become noticeably warmer. ",
-                "6" : "It got a lot warmer. "
-            },
+            [
+                "It got much colder. ",
+                "It got noticeably colder. ",
+                "It got colder. ",
+                "",
+                "Got warmer. ",
+                "It has become noticeably warmer. ",
+                "It got a lot warmer. "
+            ],
             "thunder" : "Thunder! "
         }
     }
