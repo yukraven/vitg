@@ -1,89 +1,164 @@
 {
-    "NameOfLocation" :
-    {
-        "startDescription" : "Start description. Displayed when the location appears.",
-        "description" : "Current description. Varies with state.",
-        "expectedCommands" :
-        [
-            "look_around"
-        ],
+    "NameOfLocation": {
+        "dictResource": {
+            "startDescription": "Start description. Displayed when the location appears.",
+            "description": "Current description. Varies with state.",
+            "expectedCommands": [
+                "look_around"
+            ]
+        },
 
-        "dFall" : 0,
-        "wind" : 0,
-        "wet" : 30,
-        "temperature" : 60,
-        "thunder" : false,
-
-        "toChangeDFall" :
-        [
-            [100, 0, 0, 0],
-            [0, 100, 0, 0],
-            [0, 0, 100, 0],
-            [0, 0, 0, 100]
-        ],
-        "temperatureFromWhich" :
-        {
-            "rainFreezes" : 0,
-            "rainEvaporates" : 100,
-            "hailMelts" : 100,
-            "snowMelts" : 100
-        },
-        "toChangeWind" :
-        {
-            "0" : [0, 0, 0, 100, 0, 0, 0]
-        },
-        "toChangeWet" :
-        {
-            "0" : [0, 0, 0, 100, 0, 0, 0]
-        },
-        "toChangeTemperature" :
-        {
-            "0" : [0, 0, 0, 100, 0, 0, 0]
-        },
-        "toThunder" :
-        [
-            {"probability": 0, "wind": 0, "wet": 0, "temperature": 0},
-            {"probability": 0, "wind": 0, "wet": 0, "temperature": 0},
-            {"probability": 0, "wind": 0, "wet": 0, "temperature": 0},
-            {"probability": 0, "wind": 0, "wet": 0, "temperature": 0}
-        ],
-        "ACdFall" :
-        [
-            ["", "Rain is coming. ", "Hail began. ", "It started snowing. "],
-            ["Rain stopped. ", "", "Rain gave way to hail. ", "Drops became snow. "],
-            ["Hail stopped. ", "Hail gave way to rain. ", "", "Ice became snow. "],
-            ["Snow stopped. ", "Snow gave way to rain. ", "Snow gave way to hail. ", ""]
-        ],
-        "ACwind" :
-        [
-            "The wind has lost power. ",
-            "The wind slowed down. ",
-            "The wind is a little verse. ",
-            "",
-            "The wind intensified. ",
-            "The wind gained strength. ",
-            "The wind gained great power. "
-        ],
-        "ACwet" :
-        [
-            "Moisture becomes noticeably less. ",
-            "Less moisture is felt around. ",
-            "It has become drier. ",
-            "",
-            "Got wetter. ",
-            "There is more moisture in the air. ",
-            "Air turns to water. "
-        ],
-        "ACtemperature" :
-        [
-            "It got much colder. ",
-            "It got noticeably colder. ",
-            "It got colder. ",
-            "",
-            "Got warmer. ",
-            "It has become noticeably warmer. ",
-            "It got a lot warmer. "
-        ],
-        "ACthunder" : "Thunder! "
+        "dictLocation" : {
+            "dFall": 0,
+            "wind": 0,
+            "wet": 30,
+            "temperature": 60,
+            "thunder": false,
+            "toChangeDFall": [
+                [
+                    100,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    100,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    100,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    100
+                ]
+            ],
+            "temperatureFromWhich": {
+                "rainFreezes": 0,
+                "rainEvaporates": 100,
+                "hailMelts": 100,
+                "snowMelts": 100
+            },
+            "toChangeWind": {
+                "0": [
+                    0,
+                    0,
+                    0,
+                    100,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "toChangeWet": {
+                "0": [
+                    0,
+                    0,
+                    0,
+                    100,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "toChangeTemperature": {
+                "0": [
+                    0,
+                    0,
+                    0,
+                    100,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "toThunder": [
+                {
+                    "probability": 0,
+                    "wind": 0,
+                    "wet": 0,
+                    "temperature": 0
+                },
+                {
+                    "probability": 0,
+                    "wind": 0,
+                    "wet": 0,
+                    "temperature": 0
+                },
+                {
+                    "probability": 0,
+                    "wind": 0,
+                    "wet": 0,
+                    "temperature": 0
+                },
+                {
+                    "probability": 0,
+                    "wind": 0,
+                    "wet": 0,
+                    "temperature": 0
+                }
+            ],
+            "ACdFall": [
+                [
+                    "",
+                    "Rain is coming. ",
+                    "Hail began. ",
+                    "It started snowing. "
+                ],
+                [
+                    "Rain stopped. ",
+                    "",
+                    "Rain gave way to hail. ",
+                    "Drops became snow. "
+                ],
+                [
+                    "Hail stopped. ",
+                    "Hail gave way to rain. ",
+                    "",
+                    "Ice became snow. "
+                ],
+                [
+                    "Snow stopped. ",
+                    "Snow gave way to rain. ",
+                    "Snow gave way to hail. ",
+                    ""
+                ]
+            ],
+            "ACwind": [
+                "The wind has lost power. ",
+                "The wind slowed down. ",
+                "The wind is a little verse. ",
+                "",
+                "The wind intensified. ",
+                "The wind gained strength. ",
+                "The wind gained great power. "
+            ],
+            "ACwet": [
+                "Moisture becomes noticeably less. ",
+                "Less moisture is felt around. ",
+                "It has become drier. ",
+                "",
+                "Got wetter. ",
+                "There is more moisture in the air. ",
+                "Air turns to water. "
+            ],
+            "ACtemperature": [
+                "It got much colder. ",
+                "It got noticeably colder. ",
+                "It got colder. ",
+                "",
+                "Got warmer. ",
+                "It has become noticeably warmer. ",
+                "It got a lot warmer. "
+            ],
+            "ACthunder": "Thunder! "
+        }
     }
 }

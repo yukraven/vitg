@@ -2,15 +2,17 @@ import json
 import random
 from Resources.Location import Location
 
+
 class LocationLoader:
 
-    jsonFile = ""
-    locationsNames = []
-    unusedLocationsNames = []
+    jsonFiles = []
+    locationsNames = [[]]
+    unusedLocationsNames = [[]]
 
-    def __init__(self, jsonFile):
-        self.jsonFile = jsonFile
-        with open(jsonFile, "r") as readFile:
+    def __init__(self, jsonFiles):
+        self.jsonFiles = jsonFiles
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        with open(jsonFiles, "r") as readFile:
             data = json.load(readFile)
             readFile.close()
         if data:
@@ -18,19 +20,31 @@ class LocationLoader:
                 self.locationsNames.append(name)
             self.unusedLocationsNames = self.locationsNames.copy()
 
-    def getNextRandomLocation(self):
+    def getRandomLocation(self):
+        randomJsonNumber = random.randint(0, len(self.jsonFiles))
+        jsonPath = self.jsonFiles[randomJsonNumber]
+        randomLocationNumber = random.randint(0, len(self.locationsNames[randomJsonNumber]))
+        locationName = self.locationsNames[randomLocationNumber]
+        return self.createLocationByName(jsonPath, locationName)
 
-        randomValue = random.randint(0, len(self.unusedLocationsNames))
-        randomName = self.unusedLocationsNames[randomValue]
-        with open(self.jsonFile, "r") as readFile:
+    def getNextRandomLocation(self):
+        locationName = ""
+        jsonPath = ""
+        while locationName == "":
+            randomJsonNumber = random.randint(0, len(self.jsonFiles))
+            jsonPath = self.jsonFiles[randomJsonNumber]
+            if len(self.unusedLocationsNames[randomJsonNumber]) > 0:
+                randomLocationNumber = random.randint(0, len(self.unusedLocationsNames[randomJsonNumber]))
+                locationName = self.unusedLocationsNames[randomLocationNumber]
+                self.unusedLocationsNames[randomJsonNumber].pop(randomLocationNumber)
+        return self.createLocationByName(jsonPath, locationName)
+
+    def createLocationByName(self, jsonPath, locationName):
+        with open(jsonPath, "r") as readFile:
             data = json.load(readFile)
             readFile.close()
-        jsonLocation = data[randomName]
-        self.unusedLocationsNames.зщз()
-        return self.parseJsonLocation(jsonLocation, randomName)
-
-
-    def parseJsonLocation(self, jsonLocation):
-        dictResource = {
-            "name":
-        }
+        jsonLocation = data[locationName]
+        dictResource = {"name": locationName, **jsonLocation["dictResource"]}
+        dictLocation = jsonLocation["dictLocation"]
+        location = Location(dictResource, dictLocation)
+        return location

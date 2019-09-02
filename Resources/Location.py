@@ -20,9 +20,9 @@ class Location(Resource):
                             "hailMelts": 100,
                             "snowMelts": 100},  # Temperature affecting downfall
     # Arrays of probabilities to change wind, wet and temperature
-    toChangeWind = {0: [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
-    toChangeWet = {0: [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
-    toChangeTemperature = {0: [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
+    toChangeWind = {"0": [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
+    toChangeWet = {"0": [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
+    toChangeTemperature = {"0": [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
     # Probabilities of thunder in one turn depending on the downfall
     toThunder = [{"probability": 0, "wind": 0, "wet": 0, "temperature": 0},
                  {"probability": 0, "wind": 0, "wet": 0, "temperature": 0},
