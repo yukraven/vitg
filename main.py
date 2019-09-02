@@ -1,13 +1,8 @@
-import json
-import Resources.Location as L
+from Tools.LocationLoader import LocationLoader
 
-LocJs = json.load(open("Locations.json"))
+locationLoader = LocationLoader(["Locations.json"])
+location = locationLoader.getRandomLocation()
 
-for i in LocJs:
-    temp = LocJs[i]
-    location = L.Location(i, temp["startDescription"], temp["description"], temp["expectedCommands"],
-                          temp["weather"], temp["weatherChances"], temp["weatherChanging"])
-    print(repr(location))
-    for j in range(1, 31):
-        print(("Location step %d: " % j) + location())
+for i in range(1, 31):
+    print("Turn %s:" % i, location())
 

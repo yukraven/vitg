@@ -5,12 +5,12 @@ class Resource:
     description = ""                        # Current description that storing the state of the object
     expectedCommands = []                   # Commands that should affect the object
 
-    def __init__(self, name, startDescription, description, expectedCommands):
+    def __init__(self, dictResource):
         """ Initialization """
-        self.name = name
-        self.startDescription = startDescription
-        self.description = description
-        self.expectedCommands = expectedCommands
+        self.name = dictResource["name"]
+        self.startDescription = dictResource["startDescription"]
+        self.description = dictResource["description"]
+        self.expectedCommands = dictResource["expectedCommands"]
 
     def __repr__(self):
         """ Returns string information about the all properties of object """
