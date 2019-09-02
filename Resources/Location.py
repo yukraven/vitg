@@ -71,7 +71,7 @@ class Location(Resource):
 
         result += str(self.toChangeDFall) + " " + str(self.temperatureFromWhich) + " " + \
                   str(self.toChangeWind) + " " + str(self.toChangeWet) + " " + \
-                  str(self.toChangeTemperature) + " " + self.toThunder + " "
+                  str(self.toChangeTemperature) + " " + str(self.toThunder) + " "
 
         return result
 
