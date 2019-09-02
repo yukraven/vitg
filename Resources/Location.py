@@ -91,7 +91,7 @@ class Location(Resource):
         """ Changes downfall, returns string information, if changed, else - "" """
         for index in range(len(self.toChangeDFall)):
             if self.dFall == index:
-                newDFall = self.tryChangeDFall[getRandFromArray(self.toChangeDFall[index])]()
+                newDFall = self.tryChangeDFall[getRandFromArray(self.toChangeDFall[index])](self)
                 if self.dFall == newDFall:  # if nothing changed
                     return ""
                 oldDFall, self.dFall = self.dFall, newDFall
@@ -101,8 +101,9 @@ class Location(Resource):
         """ Changes wind, if changed returns string information, else - "" """
         curWind = self.wind
         for wind in self.toChangeWind:
+            wind = int(wind)
             if curWind > wind:
-                indexOfMod, mod = self.getIndexAndMod(self.toChangeWind[wind], index)
+                indexOfMod, mod = self.getIndexAndMod(self.toChangeWind[str(wind)], index)
                 result = self.ACwind[indexOfMod]
                 curWind += mod
                 if curWind < 0: curWind = 0
@@ -115,8 +116,9 @@ class Location(Resource):
         """ Changes wet, if changed returns string information, else - "" """
         curWet = self.wet
         for wet in self.toChangeWet:
+            wet = int(wet)
             if curWet > wet:
-                indexOfMod, mod = self.getIndexAndMod(self.toChangeWet[wet], index)
+                indexOfMod, mod = self.getIndexAndMod(self.toChangeWet[str(wet)], index)
                 result = self.ACwet[indexOfMod]
                 curWet += mod
                 if curWet < 0: curWet = 0
@@ -129,8 +131,9 @@ class Location(Resource):
         """ Changes temperature, if changed returns string information, else - "" """
         curTemperature = self.temperature
         for temperature in self.toChangeTemperature:
+            temperature = int(temperature)
             if curTemperature > temperature:
-                indexOfMod, mod = self.getIndexAndMod(self.toChangeTemperature[temperature], index)
+                indexOfMod, mod = self.getIndexAndMod(self.toChangeTemperature[str(temperature)], index)
                 result = self.ACtemperature[indexOfMod]
                 curTemperature += mod
                 if curTemperature < 0: curTemperature = 0
@@ -150,7 +153,7 @@ class Location(Resource):
     def getThunder(self):
         """ Adds sound of thunder or not """
         self.thunder = False
-        chances = self.toThunder[str(self.dFall)]
+        chances = self.toThunder[self.dFall]
         prob = chances["probability"]
         if prob > 0:
             if self.wind < chances["wind"] or self.wet < chances["wet"] or self.temperature < chances["temperature"]:
