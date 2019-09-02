@@ -102,7 +102,7 @@ class Location(Resource):
         curWind = self.wind
         for wind in self.toChangeWind:
             wind = int(wind)
-            if curWind > wind:
+            if curWind >= wind:
                 indexOfMod, mod = self.getIndexAndMod(self.toChangeWind[str(wind)], index)
                 result = self.ACwind[indexOfMod]
                 curWind += mod
@@ -117,7 +117,7 @@ class Location(Resource):
         curWet = self.wet
         for wet in self.toChangeWet:
             wet = int(wet)
-            if curWet > wet:
+            if curWet >= wet:
                 indexOfMod, mod = self.getIndexAndMod(self.toChangeWet[str(wet)], index)
                 result = self.ACwet[indexOfMod]
                 curWet += mod
@@ -132,7 +132,7 @@ class Location(Resource):
         curTemperature = self.temperature
         for temperature in self.toChangeTemperature:
             temperature = int(temperature)
-            if curTemperature > temperature:
+            if curTemperature >= temperature:
                 indexOfMod, mod = self.getIndexAndMod(self.toChangeTemperature[str(temperature)], index)
                 result = self.ACtemperature[indexOfMod]
                 curTemperature += mod
