@@ -182,6 +182,7 @@ class Location(Resource):
         else:
             self.changeTemperature(2)  # -10
             newState = 2  # Hail
+
         return newState
 
     def trySnow(self):
