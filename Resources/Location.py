@@ -17,8 +17,8 @@ class Location(Resource):
                      [0, 0, 0, 100]],  # transitions 3->0, 3->1, 3->2, 3->3
     temperatureFromWhich = {"rainFreezes": 0,
                             "rainEvaporates": 100,
-                            "snowMelts": 100,
-                            "hailMelts": 100},  # Temperature affecting downfall
+                            "hailMelts": 100,
+                            "snowMelts": 100},  # Temperature affecting downfall
     # Arrays of probabilities to change wind, wet and temperature
     toChangeWind = {0: [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
     toChangeWet = {0: [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
