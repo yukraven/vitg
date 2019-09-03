@@ -126,3 +126,252 @@ class TestChangeWind(unittest.TestCase):
 
                 assert result == self.location.ACwind[i]
                 assert self.location.wind == 100
+
+
+class TestChangeWet(unittest.TestCase):
+    def setUp(self):
+        self.location = Resources.Location.Location()
+        self.location.toChangeWet = {"0": []}
+        self.location.ACwet = ["-30", "-20", "-10", "0", "10", "20", "30"]
+        self.mods = [-30, -20, -10, 0, 10, 20, 30]
+
+        self.location.getIndexAndMod = mock.Mock()
+
+    def testChangeWet(self):
+        for i in range(0, 6):
+            with self.subTest(i=i):
+                self.location.wet = 30
+                self.location.getIndexAndMod.return_value = (i, self.mods[i])
+
+                result = self.location.changeWet("random")
+
+                assert result == self.location.ACwet[i]
+                assert self.location.wet == 30 + self.mods[i]
+
+    def testChangeWetWithMod(self):
+        for i in range(0, 6):
+            with self.subTest(i=i):
+                self.location.wet = 30
+                self.location.getIndexAndMod.return_value = (i, self.mods[i])
+
+                result = self.location.changeWet(i)
+
+                assert result == self.location.ACwet[i]
+                assert self.location.wet == 30 + self.mods[i]
+
+    def testChangeWetOver(self):
+        for i in range(0, 2):
+            with self.subTest(i=i):
+                self.location.wet = 0
+                self.location.getIndexAndMod.return_value = (i, self.mods[i])
+
+                result = self.location.changeWet(i)
+
+                assert result == self.location.ACwet[i]
+                assert self.location.wet == 0
+        for i in range(4, 6):
+            with self.subTest(i=i):
+                self.location.wet = 100
+                self.location.getIndexAndMod.return_value = (i, self.mods[i])
+
+                result = self.location.changeWet(i)
+
+                assert result == self.location.ACwet[i]
+                assert self.location.wet == 100
+
+
+class TestChangeTemperature(unittest.TestCase):
+    def setUp(self):
+        self.location = Resources.Location.Location()
+        self.location.toChangeTemperature = {"0": []}
+        self.location.ACtemperature = ["-30", "-20", "-10", "0", "10", "20", "30"]
+        self.mods = [-30, -20, -10, 0, 10, 20, 30]
+
+        self.location.getIndexAndMod = mock.Mock()
+
+    def testChangeTemperature(self):
+        for i in range(0, 6):
+            with self.subTest(i=i):
+                self.location.temperature = 30
+                self.location.getIndexAndMod.return_value = (i, self.mods[i])
+
+                result = self.location.changeTemperature("random")
+
+                assert result == self.location.ACtemperature[i]
+                assert self.location.temperature == 30 + self.mods[i]
+
+    def testChangeTemperatureWithMod(self):
+        for i in range(0, 6):
+            with self.subTest(i=i):
+                self.location.temperature = 30
+                self.location.getIndexAndMod.return_value = (i, self.mods[i])
+
+                result = self.location.changeTemperature(i)
+
+                assert result == self.location.ACtemperature[i]
+                assert self.location.temperature == 30 + self.mods[i]
+
+    def testChangeTemperatureOver(self):
+        for i in range(0, 2):
+            with self.subTest(i=i):
+                self.location.temperature = 0
+                self.location.getIndexAndMod.return_value = (i, self.mods[i])
+
+                result = self.location.changeTemperature(i)
+
+                assert result == self.location.ACtemperature[i]
+                assert self.location.temperature == 0
+        for i in range(4, 6):
+            with self.subTest(i=i):
+                self.location.temperature = 100
+                self.location.getIndexAndMod.return_value = (i, self.mods[i])
+
+                result = self.location.changeTemperature(i)
+
+                assert result == self.location.ACtemperature[i]
+                assert self.location.temperature == 100
+
+
+class TestGetIndexAndMod(unittest.TestCase):
+    def setUp(self):
+        self.location = Resources.Location.Location()
+        self.mods = [-30, -20, -10, 0, 10, 20, 30]
+
+        Resources.Location.getRandFromArray = mock.Mock()
+
+    def testGetByIndex(self):
+        for i in range(0, 6):
+            with self.subTest(i=i):
+                index, mod = self.location.getIndexAndMod([], i)
+
+                assert index == i and mod == self.mods[i]
+
+    def testGetByRandom(self):
+        Resources.Location.getRandFromArray.return_value = 2
+        index, mod = self.location.getIndexAndMod([], "random")
+
+        assert index == 2 and mod == -10
+
+
+class TestGetThunder(unittest.TestCase):
+    def setUp(self):
+        self.location = Resources.Location.Location()
+        self.location.toThunder = [{"probability": 50, "wind": 0, "wet": 0, "temperature": 0},
+                                   {"probability": 50, "wind": 100, "wet": 0, "temperature": 0},
+                                   {"probability": 50, "wind": 0, "wet": 100, "temperature": 0},
+                                   {"probability": 50, "wind": 0, "wet": 0, "temperature": 100}]
+        self.location.ACthunder = "Thunder! "
+
+        Resources.Location.getRandFromArray = mock.Mock()
+
+    def testSuccess(self):
+        self.location.dFall = 0
+        Resources.Location.getRandFromArray.return_value = 0
+
+        result = self.location.getThunder()
+
+        assert result == "Thunder! "
+        assert self.location.thunder
+
+    def testFail(self):
+        self.location.dFall = 0
+        Resources.Location.getRandFromArray.return_value = 1
+
+        result = self.location.getThunder()
+
+        assert result == ""
+        assert not self.location.thunder
+
+    def testFailWind(self):
+        self.location.dFall = 1
+        self.location.wind = 0
+        Resources.Location.getRandFromArray.return_value = 0
+
+        result = self.location.getThunder()
+
+        assert result == ""
+        assert not self.location.thunder
+
+    def testFailWet(self):
+        self.location.dFall = 2
+        self.location.wet = 0
+        Resources.Location.getRandFromArray.return_value = 0
+
+        result = self.location.getThunder()
+
+        assert result == ""
+        assert not self.location.thunder
+
+    def testFailTemperature(self):
+        self.location.dFall = 3
+        self.location.temperature = 0
+        Resources.Location.getRandFromArray.return_value = 0
+
+        result = self.location.getThunder()
+
+        assert result == ""
+        assert not self.location.thunder
+
+
+class TestTryDFall(unittest.TestCase):
+    def setUp(self):
+        self.location = Resources.Location.Location()
+        self.location.temperatureFromWhich = {"rainFreezes": 20,
+                                              "rainEvaporates": 80,
+                                              "hailMelts": 60,
+                                              "snowMelts": 60}
+        self.location.wet = 0
+
+    def testTryRainSuccess(self):
+        self.location.temperature = 50
+
+        result = self.location.tryRain()
+
+        assert result == 1
+        assert self.location.wet == 30
+
+    def testTryRainFreezes(self):
+        self.location.temperature = 10
+
+        result = self.location.tryRain()
+
+        assert result == 2
+        assert self.location.wet == 0
+
+    def testTryRainEvaporates(self):
+        self.location.temperature = 90
+
+        result = self.location.tryRain()
+
+        assert result == 0
+        assert self.location.wet == 30
+
+    def testTryHailSuccess(self):
+        self.location.temperature = 50
+
+        result = self.location.tryHail()
+
+        assert result == 2
+
+    def testTryHailMelts(self):
+        self.location.temperature = 70
+
+        result = self.location.tryHail()
+
+        assert result == 1
+        assert self.location.temperature == 60
+
+    def testTrySnowSuccess(self):
+        self.location.temperature = 50
+
+        result = self.location.trySnow()
+
+        assert result == 3
+
+    def testTrySnowMelts(self):
+        self.location.temperature = 70
+
+        result = self.location.trySnow()
+
+        assert result == 1
+        assert self.location.temperature == 60

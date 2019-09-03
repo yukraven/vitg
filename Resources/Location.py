@@ -181,8 +181,8 @@ class Location(Resource):
         """ Try change downfall for hail, changes temperature, return new state """
         if self.temperature >= self.temperatureFromWhich["hailMelts"]:
             newState = self.tryRain()
-        else:
             self.changeTemperature(2)  # -10
+        else:
             newState = 2  # Hail
 
         return newState
@@ -191,8 +191,8 @@ class Location(Resource):
         """ Try change downfall for snow, changes temperature, return new state """
         if self.temperature >= self.temperatureFromWhich["snowMelts"]:
             newState = self.tryRain()
-        else:
             self.changeTemperature(2)  # -10
+        else:
             newState = 3  # Snow
         return newState
 
@@ -212,5 +212,3 @@ class Location(Resource):
         tryHail,
         trySnow
     ]   # Switch for index - "try" method
-
-
