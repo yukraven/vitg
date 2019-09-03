@@ -196,15 +196,15 @@ class Location(Resource):
             newState = 3  # Snow
         return newState
 
-    getModByIndex = {
-        0: -30,
-        1: -20,
-        2: -10,
-        3: 0,
-        4: 10,
-        5: 20,
-        6: 30
-    }  # For arrays of probabilities for wind, wet and temperature
+    getModByIndex = [
+        -30,
+        -20,
+        -10,
+        0,
+        10,
+        20,
+        30
+    ]  # For arrays of probabilities for wind, wet and temperature
 
     tryChangeDFall = [
         lambda self: 0,
