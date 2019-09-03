@@ -206,11 +206,11 @@ class Location(Resource):
         6: 30
     }  # For arrays of probabilities for wind, wet and temperature
 
-    tryChangeDFall = {
-        0: lambda self: 0,
-        1: tryRain,
-        2: tryHail,
-        3: trySnow
-    }   # Switch for index - "try" method
+    tryChangeDFall = [
+        lambda self: 0,
+        tryRain,
+        tryHail,
+        trySnow
+    ]   # Switch for index - "try" method
 
 
