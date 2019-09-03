@@ -39,28 +39,30 @@ class Location(Resource):
     ACtemperature = ["", "", "", "", "", "", ""]  # After changing temperature
     ACthunder = ""  # After thunder!!!
 
-    def __init__(self, dictResource, dictLocation):
+    def __init__(self, dictResource=None, dictLocation=None):
         """ Initialization """
         Resource.__init__(self, dictResource)
+        try:
+            self.dFall = dictLocation["dFall"]
+            self.wind = dictLocation["wind"]
+            self.wet = dictLocation["wet"]
+            self.temperature = dictLocation["temperature"]
+            self.thunder = dictLocation["thunder"]
 
-        self.dFall = dictLocation["dFall"]
-        self.wind = dictLocation["wind"]
-        self.wet = dictLocation["wet"]
-        self.temperature = dictLocation["temperature"]
-        self.thunder = dictLocation["thunder"]
+            self.toChangeDFall = dictLocation["toChangeDFall"]
+            self.temperatureFromWhich = dictLocation["temperatureFromWhich"]
+            self.toChangeWind = dictLocation["toChangeWind"]
+            self.toChangeWet = dictLocation["toChangeWet"]
+            self.toChangeTemperature = dictLocation["toChangeTemperature"]
+            self.toThunder = dictLocation["toThunder"]
 
-        self.toChangeDFall = dictLocation["toChangeDFall"]
-        self.temperatureFromWhich = dictLocation["temperatureFromWhich"]
-        self.toChangeWind = dictLocation["toChangeWind"]
-        self.toChangeWet = dictLocation["toChangeWet"]
-        self.toChangeTemperature = dictLocation["toChangeTemperature"]
-        self.toThunder = dictLocation["toThunder"]
-
-        self.ACdFall = dictLocation["ACdFall"]
-        self.ACwind = dictLocation["ACwind"]
-        self.ACwet = dictLocation["ACwet"]
-        self.ACtemperature = dictLocation["ACtemperature"]
-        self.ACthunder = dictLocation["ACthunder"]
+            self.ACdFall = dictLocation["ACdFall"]
+            self.ACwind = dictLocation["ACwind"]
+            self.ACwet = dictLocation["ACwet"]
+            self.ACtemperature = dictLocation["ACtemperature"]
+            self.ACthunder = dictLocation["ACthunder"]
+        except TypeError:
+            pass
 
     def __repr__(self):
         """ Complements the information by adding about weather and weather chances """

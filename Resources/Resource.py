@@ -7,10 +7,13 @@ class Resource:
 
     def __init__(self, dictResource):
         """ Initialization """
-        self.name = dictResource["name"]
-        self.startDescription = dictResource["startDescription"]
-        self.description = dictResource["description"]
-        self.expectedCommands = dictResource["expectedCommands"]
+        try:
+            self.name = dictResource["name"]
+            self.startDescription = dictResource["startDescription"]
+            self.description = dictResource["description"]
+            self.expectedCommands = dictResource["expectedCommands"]
+        except TypeError:
+            pass
 
     def __repr__(self):
         """ Returns string information about the all properties of object """
