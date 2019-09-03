@@ -1,5 +1,6 @@
 import random
 from Tools.Exceptions import ValueIsNotProbabilityError
+from Tools.Exceptions import SumOfProbabilitiesIsNot100Error
 
 
 def getRandFromArray(array):
@@ -11,6 +12,11 @@ def getRandFromArray(array):
     for i in array:
         if i < 0 or i > 100:
             raise ValueIsNotProbabilityError(i)
+    sumOfProbabilities = 0
+    for i in array:
+        sumOfProbabilities += i
+    if sumOfProbabilities != 100:
+        raise SumOfProbabilitiesIsNot100Error
 
     temp = 0
     resultArray = []
