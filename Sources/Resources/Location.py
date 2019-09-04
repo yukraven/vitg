@@ -1,5 +1,8 @@
+import logging
 from Sources.Tools.Instruments import getRandFromArray
 from Sources.Resources.Resource import Resource
+
+logger = logging.getLogger("location")
 
 
 class Location(Resource):
@@ -41,6 +44,7 @@ class Location(Resource):
 
     def __init__(self, dictResource=None, dictLocation=None):
         """ Initialization """
+        logger.info("Initialization of Location.")
         Resource.__init__(self, dictResource)
         try:
             self.dFall = dictLocation["dFall"]
@@ -82,6 +86,7 @@ class Location(Resource):
 
     def __call__(self):
         """ Makes a turn, changes its condition, mostly weather, returns string information about it, else - "" """
+        logger.info("Location turn.")
         result = self.changeDFall()
         result += self.changeWind("random")
         result += self.changeWet("random")
@@ -91,6 +96,7 @@ class Location(Resource):
 
     def changeDFall(self):
         """ Changes downfall, returns string information, if changed, else - "" """
+        logger.info("Trying change downfall.")
         for index in range(len(self.toChangeDFall)):
             if self.dFall == index:
                 newDFall = self.tryChangeDFall[getRandFromArray(self.toChangeDFall[index])](self)
@@ -101,6 +107,7 @@ class Location(Resource):
 
     def changeWind(self, index):
         """ Changes wind, if changed returns string information, else - "" """
+        logger.info("Trying change wind.")
         curWind = self.wind
         for wind in self.toChangeWind:
             wind = int(wind)
@@ -116,6 +123,7 @@ class Location(Resource):
 
     def changeWet(self, index):
         """ Changes wet, if changed returns string information, else - "" """
+        logger.info("Trying change wet.")
         curWet = self.wet
         for wet in self.toChangeWet:
             wet = int(wet)
@@ -131,6 +139,7 @@ class Location(Resource):
 
     def changeTemperature(self, index):
         """ Changes temperature, if changed returns string information, else - "" """
+        logger.info("Trying change temperature.")
         curTemperature = self.temperature
         for temperature in self.toChangeTemperature:
             temperature = int(temperature)
@@ -145,6 +154,7 @@ class Location(Resource):
         return ""
 
     def getIndexAndMod(self, array, index):
+        logger.info("Getting index and mod by index: %s.", index)
         if index == "random":
             indexOfMod = getRandFromArray(array)
         else:
@@ -154,6 +164,7 @@ class Location(Resource):
 
     def getThunder(self):
         """ Adds sound of thunder or not """
+        logger.info("Trying get thunder!")
         self.thunder = False
         chances = self.toThunder[self.dFall]
         prob = chances["probability"]
@@ -167,6 +178,7 @@ class Location(Resource):
 
     def tryRain(self):
         """ Try change downfall for rain, changes wet, return new state """
+        logger.info("Trying rain.")
         if self.temperature <= self.temperatureFromWhich["rainFreezes"]:
             newState = self.tryHail()
         elif self.temperature >= self.temperatureFromWhich["rainEvaporates"]:
@@ -179,6 +191,7 @@ class Location(Resource):
 
     def tryHail(self):
         """ Try change downfall for hail, changes temperature, return new state """
+        logger.info("Trying hail.")
         if self.temperature >= self.temperatureFromWhich["hailMelts"]:
             newState = self.tryRain()
             self.changeTemperature(2)  # -10
@@ -189,6 +202,7 @@ class Location(Resource):
 
     def trySnow(self):
         """ Try change downfall for snow, changes temperature, return new state """
+        logger.info("Trying snow.")
         if self.temperature >= self.temperatureFromWhich["snowMelts"]:
             newState = self.tryRain()
             self.changeTemperature(2)  # -10
