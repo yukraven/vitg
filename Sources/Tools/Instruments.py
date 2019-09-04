@@ -1,6 +1,6 @@
 import random
-from Tools.Exceptions import ValueIsNotProbabilityError
-from Tools.Exceptions import SumOfProbabilitiesIsNot100Error
+from Sources.Tools.Exceptions import ValueIsNotProbabilityError
+from Sources.Tools.Exceptions import SumOfProbabilitiesIsNot100Error
 
 
 def getRandFromArray(array):

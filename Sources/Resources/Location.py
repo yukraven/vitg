@@ -1,5 +1,5 @@
-from Tools.Instruments import getRandFromArray
-from Resources.Resource import Resource
+from Sources.Tools.Instruments import getRandFromArray
+from Sources.Resources.Resource import Resource
 
 
 class Location(Resource):

@@ -1,6 +1,6 @@
 import json
 import random
-from Resources.Location import Location
+from Sources.Resources.Location import Location
 
 
 class LocationLoader:

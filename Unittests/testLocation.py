@@ -1,11 +1,11 @@
 import unittest
 from unittest import mock
-import Resources.Location
+import Sources.Resources.Location
 
 
 class TestCall(unittest.TestCase):
     def setUp(self):
-        self.location = Resources.Location.Location()
+        self.location = Sources.Resources.Location.Location()
 
         self.location.changeDFall = mock.Mock()
         self.location.changeWind = mock.Mock()
@@ -34,7 +34,7 @@ class TestCall(unittest.TestCase):
 
 class TestChangeDFall(unittest.TestCase):
     def setUp(self):
-        self.location = Resources.Location.Location()
+        self.location = Sources.Resources.Location.Location()
         self.location.dFall = 0
         self.location.toChangeDFall = [0, 0, 0, 0]
         self.location.ACdFall = [["Clear. ", "Rain. ", "Hail. ", "Snow. "],
@@ -48,10 +48,10 @@ class TestChangeDFall(unittest.TestCase):
             lambda n: 3
         ]
 
-        Resources.Location.getRandFromArray = mock.Mock()
+        Sources.Resources.Location.getRandFromArray = mock.Mock()
 
     def testClearToRain(self):
-        Resources.Location.getRandFromArray.return_value = 1
+        Sources.Resources.Location.getRandFromArray.return_value = 1
 
         result = self.location.changeDFall()
 
@@ -59,7 +59,7 @@ class TestChangeDFall(unittest.TestCase):
         assert self.location.dFall == 1
 
     def testClearToClear(self):
-        Resources.Location.getRandFromArray.return_value = 0
+        Sources.Resources.Location.getRandFromArray.return_value = 0
 
         result = self.location.changeDFall()
 
@@ -68,7 +68,7 @@ class TestChangeDFall(unittest.TestCase):
 
     def testRainToHail(self):
         self.location.dFall = 1
-        Resources.Location.getRandFromArray.return_value = 2
+        Sources.Resources.Location.getRandFromArray.return_value = 2
 
         result = self.location.changeDFall()
 
@@ -78,7 +78,7 @@ class TestChangeDFall(unittest.TestCase):
 
 class TestChangeWind(unittest.TestCase):
     def setUp(self):
-        self.location = Resources.Location.Location()
+        self.location = Sources.Resources.Location.Location()
         self.location.toChangeWind = {"0": []}
         self.location.ACwind = ["-30", "-20", "-10", "0", "10", "20", "30"]
         self.mods = [-30, -20, -10, 0, 10, 20, 30]
@@ -130,7 +130,7 @@ class TestChangeWind(unittest.TestCase):
 
 class TestChangeWet(unittest.TestCase):
     def setUp(self):
-        self.location = Resources.Location.Location()
+        self.location = Sources.Resources.Location.Location()
         self.location.toChangeWet = {"0": []}
         self.location.ACwet = ["-30", "-20", "-10", "0", "10", "20", "30"]
         self.mods = [-30, -20, -10, 0, 10, 20, 30]
@@ -182,7 +182,7 @@ class TestChangeWet(unittest.TestCase):
 
 class TestChangeTemperature(unittest.TestCase):
     def setUp(self):
-        self.location = Resources.Location.Location()
+        self.location = Sources.Resources.Location.Location()
         self.location.toChangeTemperature = {"0": []}
         self.location.ACtemperature = ["-30", "-20", "-10", "0", "10", "20", "30"]
         self.mods = [-30, -20, -10, 0, 10, 20, 30]
@@ -234,10 +234,10 @@ class TestChangeTemperature(unittest.TestCase):
 
 class TestGetIndexAndMod(unittest.TestCase):
     def setUp(self):
-        self.location = Resources.Location.Location()
+        self.location = Sources.Resources.Location.Location()
         self.mods = [-30, -20, -10, 0, 10, 20, 30]
 
-        Resources.Location.getRandFromArray = mock.Mock()
+        Sources.Resources.Location.getRandFromArray = mock.Mock()
 
     def testGetByIndex(self):
         for i in range(0, 6):
@@ -247,7 +247,7 @@ class TestGetIndexAndMod(unittest.TestCase):
                 assert index == i and mod == self.mods[i]
 
     def testGetByRandom(self):
-        Resources.Location.getRandFromArray.return_value = 2
+        Sources.Resources.Location.getRandFromArray.return_value = 2
         index, mod = self.location.getIndexAndMod([], "random")
 
         assert index == 2 and mod == -10
@@ -255,18 +255,18 @@ class TestGetIndexAndMod(unittest.TestCase):
 
 class TestGetThunder(unittest.TestCase):
     def setUp(self):
-        self.location = Resources.Location.Location()
+        self.location = Sources.Resources.Location.Location()
         self.location.toThunder = [{"probability": 50, "wind": 0, "wet": 0, "temperature": 0},
                                    {"probability": 50, "wind": 100, "wet": 0, "temperature": 0},
                                    {"probability": 50, "wind": 0, "wet": 100, "temperature": 0},
                                    {"probability": 50, "wind": 0, "wet": 0, "temperature": 100}]
         self.location.ACthunder = "Thunder! "
 
-        Resources.Location.getRandFromArray = mock.Mock()
+        Sources.Resources.Location.getRandFromArray = mock.Mock()
 
     def testSuccess(self):
         self.location.dFall = 0
-        Resources.Location.getRandFromArray.return_value = 0
+        Sources.Resources.Location.getRandFromArray.return_value = 0
 
         result = self.location.getThunder()
 
@@ -275,7 +275,7 @@ class TestGetThunder(unittest.TestCase):
 
     def testFail(self):
         self.location.dFall = 0
-        Resources.Location.getRandFromArray.return_value = 1
+        Sources.Resources.Location.getRandFromArray.return_value = 1
 
         result = self.location.getThunder()
 
@@ -285,7 +285,7 @@ class TestGetThunder(unittest.TestCase):
     def testFailWind(self):
         self.location.dFall = 1
         self.location.wind = 0
-        Resources.Location.getRandFromArray.return_value = 0
+        Sources.Resources.Location.getRandFromArray.return_value = 0
 
         result = self.location.getThunder()
 
@@ -295,7 +295,7 @@ class TestGetThunder(unittest.TestCase):
     def testFailWet(self):
         self.location.dFall = 2
         self.location.wet = 0
-        Resources.Location.getRandFromArray.return_value = 0
+        Sources.Resources.Location.getRandFromArray.return_value = 0
 
         result = self.location.getThunder()
 
@@ -305,7 +305,7 @@ class TestGetThunder(unittest.TestCase):
     def testFailTemperature(self):
         self.location.dFall = 3
         self.location.temperature = 0
-        Resources.Location.getRandFromArray.return_value = 0
+        Sources.Resources.Location.getRandFromArray.return_value = 0
 
         result = self.location.getThunder()
 
@@ -315,7 +315,7 @@ class TestGetThunder(unittest.TestCase):
 
 class TestTryDFall(unittest.TestCase):
     def setUp(self):
-        self.location = Resources.Location.Location()
+        self.location = Sources.Resources.Location.Location()
         self.location.temperatureFromWhich = {"rainFreezes": 20,
                                               "rainEvaporates": 80,
                                               "hailMelts": 60,
