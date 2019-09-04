@@ -1,7 +1,7 @@
 from Tools.LocationLoader import LocationLoader
 from Resources.Location import Location
 
-locationLoader = LocationLoader(["Locations.json"])
+locationLoader = LocationLoader(["Jsons/Locations.json"])
 location = locationLoader.getRandomLocation()
 
 for i in range(1, 31):
