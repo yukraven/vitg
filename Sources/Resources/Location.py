@@ -1,8 +1,20 @@
+import json
 import logging
 from Sources.Tools.Instruments import getRandFromArray
 from Sources.Resources.Resource import Resource
 
 logger = logging.getLogger("location")
+
+
+def createLocation(jsonPath, locationName):
+    with open(jsonPath, "r") as readFile:
+        data = json.load(readFile)
+        readFile.close()
+    jsonLocation = data[locationName]
+    dictResource = {"name": locationName, **jsonLocation["dictResource"]}
+    dictLocation = jsonLocation["dictLocation"]
+    location = Location(dictResource, dictLocation)
+    return location
 
 
 class Location(Resource):

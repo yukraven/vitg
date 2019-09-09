@@ -1,6 +1,6 @@
 import json
 import random
-from Sources.Resources.Location import Location
+import Sources.Resources.Location
 
 
 class LocationLoader:
@@ -30,7 +30,7 @@ class LocationLoader:
         jsonPath = self.jsonFiles[randomJsonNumber]
         randomLocationNumber = random.randint(0, len(self.locationsNames[randomJsonNumber])-1)
         locationName = self.locationsNames[randomJsonNumber][randomLocationNumber]
-        return self.createLocationByName(jsonPath, locationName)
+        return Sources.Resources.Location.createLocation(jsonPath, locationName)
 
     def getNextRandomLocation(self):
         locationName = ""
@@ -42,14 +42,4 @@ class LocationLoader:
                 randomLocationNumber = random.randint(0, len(self.unusedLocationsNames[randomJsonNumber])-1)
                 locationName = self.unusedLocationsNames[randomJsonNumber][randomLocationNumber]
                 self.unusedLocationsNames[randomJsonNumber].pop(randomLocationNumber)
-        return self.createLocationByName(jsonPath, locationName)
-
-    def createLocationByName(self, jsonPath, locationName):
-        with open(jsonPath, "r") as readFile:
-            data = json.load(readFile)
-            readFile.close()
-        jsonLocation = data[locationName]
-        dictResource = {"name": locationName, **jsonLocation["dictResource"]}
-        dictLocation = jsonLocation["dictLocation"]
-        location = Location(dictResource, dictLocation)
-        return location
+        return Sources.Resources.Location.createLocation(jsonPath, locationName)

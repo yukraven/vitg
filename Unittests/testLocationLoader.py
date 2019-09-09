@@ -1,6 +1,7 @@
 import unittest
 from unittest import mock
 import Sources.Tools.LocationLoader
+import Sources.Resources.Location
 
 
 class TestGetRandomLocation(unittest.TestCase):
@@ -13,7 +14,7 @@ class TestGetRandomLocation(unittest.TestCase):
         assert loader.unusedLocationsNames == [["TestLocation"]]
 
     def testGetRandomLocation(self):
-        with mock.patch.object(Sources.Tools.LocationLoader.LocationLoader, "createLocationByName",
+        with mock.patch.object(Sources.Resources.Location, "createLocation",
                                return_value=None) as mockMethod:
             loader = Sources.Tools.LocationLoader.LocationLoader([self.path])
             loader.getRandomLocation()
@@ -21,7 +22,7 @@ class TestGetRandomLocation(unittest.TestCase):
             mockMethod.assert_called_once_with("Jsons/TestLocation.json", "TestLocation")
 
     def testGetNextRandomLocation(self):
-        with mock.patch.object(Sources.Tools.LocationLoader.LocationLoader, "createLocationByName",
+        with mock.patch.object(Sources.Resources.Location, "createLocation",
                                return_value=None) as mockMethod:
             loader = Sources.Tools.LocationLoader.LocationLoader([self.path])
             loader.unusedLocationsNames[0].append("AnotherTestLocation")
@@ -29,19 +30,3 @@ class TestGetRandomLocation(unittest.TestCase):
             loader.getNextRandomLocation()
 
             mockMethod.assert_called_once_with(self.path, "AnotherTestLocation")
-
-    def testCreateLocationByName(self):
-        loader = Sources.Tools.LocationLoader.LocationLoader([self.path])
-        location = loader.createLocationByName(self.path, "TestLocation")
-        dFall = 1
-        wind = 2
-        wet = 3
-        temperature = 4
-        thunder = True
-        ACThunder = "Test Thunder! "
-
-        targetTuple = (dFall, wind, wet, temperature, thunder, ACThunder)
-        locationTuple = (location.dFall, location.wind, location.wet,
-                         location.temperature, location.thunder, location.ACthunder)
-
-        assert targetTuple == locationTuple
