@@ -22,7 +22,7 @@ class Location(Resource):
     dFall = 0  # 0 - clear, 1 - rain, 2 - hail, 3 - snow
     wind = 0  # from 0 to 100 (1 points = 1 km/s)
     wet = 0  # from 0 to 100 (%)
-    temperature = 0  # from 0 to 100 (1 point = 2 degrees Celsius, 50 = 0)
+    temper = 0  # from 0 to 100 (1 point = 2 degrees Celsius, 50 = 0)
     thunder = False  # does thunder sound in the current turn
 
     # Arrays of probabilities to change downfall
@@ -30,19 +30,19 @@ class Location(Resource):
                      [0, 100, 0, 0],  # transitions 1->0, 1->1, 1->2, 1->3
                      [0, 0, 100, 0],  # transitions 2->0, 2->1, 2->2, 2->3
                      [0, 0, 0, 100]],  # transitions 3->0, 3->1, 3->2, 3->3
-    temperatureFromWhich = {"rainFreezes": 0,
+    temperFromWhich = {"rainFreezes": 0,
                             "rainEvaporates": 100,
                             "hailMelts": 100,
                             "snowMelts": 100},  # Temperature affecting downfall
     # Arrays of probabilities to change wind, wet and temperature
     toChangeWind = {"0": [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
     toChangeWet = {"0": [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
-    toChangeTemperature = {"0": [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
+    toChangeTemper = {"0": [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
     # Probabilities of thunder in one turn depending on the downfall
-    toThunder = [{"probability": 0, "wind": 0, "wet": 0, "temperature": 0},
-                 {"probability": 0, "wind": 0, "wet": 0, "temperature": 0},
-                 {"probability": 0, "wind": 0, "wet": 0, "temperature": 0},
-                 {"probability": 0, "wind": 0, "wet": 0, "temperature": 0}]  # Probability under conditions
+    toThunder = [{"probability": 0, "wind": 0, "wet": 0, "temper": 0},
+                 {"probability": 0, "wind": 0, "wet": 0, "temper": 0},
+                 {"probability": 0, "wind": 0, "wet": 0, "temper": 0},
+                 {"probability": 0, "wind": 0, "wet": 0, "temper": 0}]  # Probability under conditions
 
     # String data, that returns after changing (AC) properties
     ACdFall = [["", "", "", ""],
@@ -51,7 +51,7 @@ class Location(Resource):
                ["", "", "", ""]]  # After changing downfall
     ACwind = ["", "", "", "", "", "", ""]  # After changing wind
     ACwet = ["", "", "", "", "", "", ""]  # After changing wet
-    ACtemperature = ["", "", "", "", "", "", ""]  # After changing temperature
+    ACtemper = ["", "", "", "", "", "", ""]  # After changing temperature
     ACthunder = ""  # After thunder!!!
 
     def __init__(self, dictResource=None, dictLocation=None):
@@ -62,20 +62,20 @@ class Location(Resource):
             self.dFall = dictLocation["dFall"]
             self.wind = dictLocation["wind"]
             self.wet = dictLocation["wet"]
-            self.temperature = dictLocation["temperature"]
+            self.temper = dictLocation["temper"]
             self.thunder = dictLocation["thunder"]
 
             self.toChangeDFall = dictLocation["toChangeDFall"]
-            self.temperatureFromWhich = dictLocation["temperatureFromWhich"]
+            self.temperFromWhich = dictLocation["temperFromWhich"]
             self.toChangeWind = dictLocation["toChangeWind"]
             self.toChangeWet = dictLocation["toChangeWet"]
-            self.toChangeTemperature = dictLocation["toChangeTemperature"]
+            self.toChangeTemper = dictLocation["toChangeTemper"]
             self.toThunder = dictLocation["toThunder"]
 
             self.ACdFall = dictLocation["ACdFall"]
             self.ACwind = dictLocation["ACwind"]
             self.ACwet = dictLocation["ACwet"]
-            self.ACtemperature = dictLocation["ACtemperature"]
+            self.ACtemper = dictLocation["ACtemper"]
             self.ACthunder = dictLocation["ACthunder"]
         except TypeError:
             pass
@@ -85,11 +85,11 @@ class Location(Resource):
         result = Resource.__repr__(self) + " | "
 
         result += str(self.dFall) + " " + str(self.wind) + " " + str(self.wet) + " " + \
-                  str(self.temperature) + " " + str(self.thunder) + " "
+                  str(self.temper) + " " + str(self.thunder) + " "
 
-        result += str(self.toChangeDFall) + " " + str(self.temperatureFromWhich) + " " + \
+        result += str(self.toChangeDFall) + " " + str(self.temperFromWhich) + " " + \
                   str(self.toChangeWind) + " " + str(self.toChangeWet) + " " + \
-                  str(self.toChangeTemperature) + " " + str(self.toThunder) + " "
+                  str(self.toChangeTemper) + " " + str(self.toThunder) + " "
 
         return result
 
@@ -102,7 +102,7 @@ class Location(Resource):
         result = self.changeDFall()
         result += self.changeWind("random")
         result += self.changeWet("random")
-        result += self.changeTemperature("random")
+        result += self.changeTemper("random")
         result += self.getThunder()
         return result
 
@@ -149,19 +149,19 @@ class Location(Resource):
                 return result
         return ""
 
-    def changeTemperature(self, index):
+    def changeTemper(self, index):
         """ Changes temperature, if changed returns string information, else - "" """
         logger.info("Trying change temperature.")
-        curTemperature = self.temperature
-        for temperature in self.toChangeTemperature:
-            temperature = int(temperature)
-            if curTemperature >= temperature:
-                indexOfMod, mod = self.getIndexAndMod(self.toChangeTemperature[str(temperature)], index)
-                result = self.ACtemperature[indexOfMod]
-                curTemperature += mod
-                if curTemperature < 0: curTemperature = 0
-                elif curTemperature > 100: curTemperature = 100
-                self.temperature = curTemperature
+        curTemper = self.temper
+        for temper in self.toChangeTemper:
+            temper = int(temper)
+            if curTemper >= temper:
+                indexOfMod, mod = self.getIndexAndMod(self.toChangeTemper[str(temper)], index)
+                result = self.ACtemper[indexOfMod]
+                curTemper += mod
+                if curTemper < 0: curTemper = 0
+                elif curTemper > 100: curTemper = 100
+                self.temper = curTemper
                 return result
         return ""
 
@@ -181,7 +181,7 @@ class Location(Resource):
         chances = self.toThunder[self.dFall]
         prob = chances["probability"]
         if prob > 0:
-            if self.wind < chances["wind"] or self.wet < chances["wet"] or self.temperature < chances["temperature"]:
+            if self.wind < chances["wind"] or self.wet < chances["wet"] or self.temper < chances["temper"]:
                 return ""
             if getRandFromArray([prob, 100 - prob]) == 0:
                 self.thunder = True
@@ -191,9 +191,9 @@ class Location(Resource):
     def tryRain(self):
         """ Try change downfall for rain, changes wet, return new state """
         logger.info("Trying rain.")
-        if self.temperature <= self.temperatureFromWhich["rainFreezes"]:
+        if self.temper <= self.temperFromWhich["rainFreezes"]:
             newState = self.tryHail()
-        elif self.temperature >= self.temperatureFromWhich["rainEvaporates"]:
+        elif self.temper >= self.temperFromWhich["rainEvaporates"]:
             self.changeWet(6)  # +30
             newState = 0  # Clear
         else:
@@ -204,9 +204,9 @@ class Location(Resource):
     def tryHail(self):
         """ Try change downfall for hail, changes temperature, return new state """
         logger.info("Trying hail.")
-        if self.temperature >= self.temperatureFromWhich["hailMelts"]:
+        if self.temper >= self.temperFromWhich["hailMelts"]:
             newState = self.tryRain()
-            self.changeTemperature(2)  # -10
+            self.changeTemper(2)  # -10
         else:
             newState = 2  # Hail
 
@@ -215,9 +215,9 @@ class Location(Resource):
     def trySnow(self):
         """ Try change downfall for snow, changes temperature, return new state """
         logger.info("Trying snow.")
-        if self.temperature >= self.temperatureFromWhich["snowMelts"]:
+        if self.temper >= self.temperFromWhich["snowMelts"]:
             newState = self.tryRain()
-            self.changeTemperature(2)  # -10
+            self.changeTemper(2)  # -10
         else:
             newState = 3  # Snow
         return newState

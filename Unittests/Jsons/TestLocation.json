@@ -12,7 +12,7 @@
             "dFall": 1,
             "wind": 2,
             "wet": 3,
-            "temperature": 4,
+            "temper": 4,
             "thunder": true,
             "toChangeDFall": [
                 [
@@ -40,7 +40,7 @@
                     100
                 ]
             ],
-            "temperatureFromWhich": {
+            "temperFromWhich": {
                 "rainFreezes": 0,
                 "rainEvaporates": 100,
                 "hailMelts": 100,
@@ -68,7 +68,7 @@
                     0
                 ]
             },
-            "toChangeTemperature": {
+            "toChangeTemper": {
                 "0": [
                     0,
                     0,
@@ -84,25 +84,25 @@
                     "probability": 0,
                     "wind": 0,
                     "wet": 0,
-                    "temperature": 0
+                    "temper": 0
                 },
                 {
                     "probability": 0,
                     "wind": 0,
                     "wet": 0,
-                    "temperature": 0
+                    "temper": 0
                 },
                 {
                     "probability": 0,
                     "wind": 0,
                     "wet": 0,
-                    "temperature": 0
+                    "temper": 0
                 },
                 {
                     "probability": 0,
                     "wind": 0,
                     "wet": 0,
-                    "temperature": 0
+                    "temper": 0
                 }
             ],
             "ACdFall": [
@@ -149,7 +149,7 @@
                 "There is more moisture in the air. ",
                 "Air turns to water. "
             ],
-            "ACtemperature": [
+            "ACtemper": [
                 "It got much colder. ",
                 "It got noticeably colder. ",
                 "It got colder. ",

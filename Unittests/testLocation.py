@@ -12,13 +12,13 @@ class TestCreateLocation(unittest.TestCase):
         dFall = 1
         wind = 2
         wet = 3
-        temperature = 4
+        temper = 4
         thunder = True
         ACThunder = "Test Thunder! "
 
-        targetTuple = (dFall, wind, wet, temperature, thunder, ACThunder)
+        targetTuple = (dFall, wind, wet, temper, thunder, ACThunder)
         locationTuple = (location.dFall, location.wind, location.wet,
-                         location.temperature, location.thunder, location.ACthunder)
+                         location.temper, location.thunder, location.ACthunder)
 
         assert targetTuple == locationTuple
 
@@ -30,14 +30,14 @@ class TestCall(unittest.TestCase):
         self.location.changeDFall = mock.Mock()
         self.location.changeWind = mock.Mock()
         self.location.changeWet = mock.Mock()
-        self.location.changeTemperature = mock.Mock()
+        self.location.changeTemper = mock.Mock()
         self.location.getThunder = mock.Mock()
 
     def testAllReturn(self):
         self.location.changeDFall.return_value = "1. "
         self.location.changeWind.return_value = "2. "
         self.location.changeWet.return_value = "3. "
-        self.location.changeTemperature.return_value = "4. "
+        self.location.changeTemper.return_value = "4. "
         self.location.getThunder.return_value = "5. "
 
         assert self.location() == "1. 2. 3. 4. 5. "
@@ -46,7 +46,7 @@ class TestCall(unittest.TestCase):
         self.location.changeDFall.return_value = "1. "
         self.location.changeWind.return_value = ""
         self.location.changeWet.return_value = "3. "
-        self.location.changeTemperature.return_value = "4. "
+        self.location.changeTemper.return_value = "4. "
         self.location.getThunder.return_value = ""
 
         assert self.location() == "1. 3. 4. "
@@ -200,56 +200,56 @@ class TestChangeWet(unittest.TestCase):
                 assert self.location.wet == 100
 
 
-class TestChangeTemperature(unittest.TestCase):
+class TestChangeTemper(unittest.TestCase):
     def setUp(self):
         self.location = Sources.Resources.Location.Location()
-        self.location.toChangeTemperature = {"0": []}
-        self.location.ACtemperature = ["-30", "-20", "-10", "0", "10", "20", "30"]
+        self.location.toChangeTemper = {"0": []}
+        self.location.ACtemper = ["-30", "-20", "-10", "0", "10", "20", "30"]
         self.mods = [-30, -20, -10, 0, 10, 20, 30]
 
         self.location.getIndexAndMod = mock.Mock()
 
-    def testChangeTemperature(self):
+    def testChangeTemper(self):
         for i in range(0, 6):
             with self.subTest(i=i):
-                self.location.temperature = 30
+                self.location.temper = 30
                 self.location.getIndexAndMod.return_value = (i, self.mods[i])
 
-                result = self.location.changeTemperature("random")
+                result = self.location.changeTemper("random")
 
-                assert result == self.location.ACtemperature[i]
-                assert self.location.temperature == 30 + self.mods[i]
+                assert result == self.location.ACtemper[i]
+                assert self.location.temper == 30 + self.mods[i]
 
-    def testChangeTemperatureWithMod(self):
+    def testChangeTemperWithMod(self):
         for i in range(0, 6):
             with self.subTest(i=i):
-                self.location.temperature = 30
+                self.location.temper = 30
                 self.location.getIndexAndMod.return_value = (i, self.mods[i])
 
-                result = self.location.changeTemperature(i)
+                result = self.location.changeTemper(i)
 
-                assert result == self.location.ACtemperature[i]
-                assert self.location.temperature == 30 + self.mods[i]
+                assert result == self.location.ACtemper[i]
+                assert self.location.temper == 30 + self.mods[i]
 
-    def testChangeTemperatureOver(self):
+    def testChangeTemperOver(self):
         for i in range(0, 2):
             with self.subTest(i=i):
-                self.location.temperature = 0
+                self.location.temper = 0
                 self.location.getIndexAndMod.return_value = (i, self.mods[i])
 
-                result = self.location.changeTemperature(i)
+                result = self.location.changeTemper(i)
 
-                assert result == self.location.ACtemperature[i]
-                assert self.location.temperature == 0
+                assert result == self.location.ACtemper[i]
+                assert self.location.temper == 0
         for i in range(4, 6):
             with self.subTest(i=i):
-                self.location.temperature = 100
+                self.location.temper = 100
                 self.location.getIndexAndMod.return_value = (i, self.mods[i])
 
-                result = self.location.changeTemperature(i)
+                result = self.location.changeTemper(i)
 
-                assert result == self.location.ACtemperature[i]
-                assert self.location.temperature == 100
+                assert result == self.location.ACtemper[i]
+                assert self.location.temper == 100
 
 
 class TestGetIndexAndMod(unittest.TestCase):
@@ -276,10 +276,10 @@ class TestGetIndexAndMod(unittest.TestCase):
 class TestGetThunder(unittest.TestCase):
     def setUp(self):
         self.location = Sources.Resources.Location.Location()
-        self.location.toThunder = [{"probability": 50, "wind": 0, "wet": 0, "temperature": 0},
-                                   {"probability": 50, "wind": 100, "wet": 0, "temperature": 0},
-                                   {"probability": 50, "wind": 0, "wet": 100, "temperature": 0},
-                                   {"probability": 50, "wind": 0, "wet": 0, "temperature": 100}]
+        self.location.toThunder = [{"probability": 50, "wind": 0, "wet": 0, "temper": 0},
+                                   {"probability": 50, "wind": 100, "wet": 0, "temper": 0},
+                                   {"probability": 50, "wind": 0, "wet": 100, "temper": 0},
+                                   {"probability": 50, "wind": 0, "wet": 0, "temper": 100}]
         self.location.ACthunder = "Thunder! "
 
         Sources.Resources.Location.getRandFromArray = mock.Mock()
@@ -322,9 +322,9 @@ class TestGetThunder(unittest.TestCase):
         assert result == ""
         assert not self.location.thunder
 
-    def testFailTemperature(self):
+    def testFailTemper(self):
         self.location.dFall = 3
-        self.location.temperature = 0
+        self.location.temper = 0
         Sources.Resources.Location.getRandFromArray.return_value = 0
 
         result = self.location.getThunder()
@@ -336,14 +336,14 @@ class TestGetThunder(unittest.TestCase):
 class TestTryDFall(unittest.TestCase):
     def setUp(self):
         self.location = Sources.Resources.Location.Location()
-        self.location.temperatureFromWhich = {"rainFreezes": 20,
+        self.location.temperFromWhich = {"rainFreezes": 20,
                                               "rainEvaporates": 80,
                                               "hailMelts": 60,
                                               "snowMelts": 60}
         self.location.wet = 0
 
     def testTryRainSuccess(self):
-        self.location.temperature = 50
+        self.location.temper = 50
 
         result = self.location.tryRain()
 
@@ -351,7 +351,7 @@ class TestTryDFall(unittest.TestCase):
         assert self.location.wet == 30
 
     def testTryRainFreezes(self):
-        self.location.temperature = 10
+        self.location.temper = 10
 
         result = self.location.tryRain()
 
@@ -359,7 +359,7 @@ class TestTryDFall(unittest.TestCase):
         assert self.location.wet == 0
 
     def testTryRainEvaporates(self):
-        self.location.temperature = 90
+        self.location.temper = 90
 
         result = self.location.tryRain()
 
@@ -367,31 +367,31 @@ class TestTryDFall(unittest.TestCase):
         assert self.location.wet == 30
 
     def testTryHailSuccess(self):
-        self.location.temperature = 50
+        self.location.temper = 50
 
         result = self.location.tryHail()
 
         assert result == 2
 
     def testTryHailMelts(self):
-        self.location.temperature = 70
+        self.location.temper = 70
 
         result = self.location.tryHail()
 
         assert result == 1
-        assert self.location.temperature == 60
+        assert self.location.temper == 60
 
     def testTrySnowSuccess(self):
-        self.location.temperature = 50
+        self.location.temper = 50
 
         result = self.location.trySnow()
 
         assert result == 3
 
     def testTrySnowMelts(self):
-        self.location.temperature = 70
+        self.location.temper = 70
 
         result = self.location.trySnow()
 
         assert result == 1
-        assert self.location.temperature == 60
+        assert self.location.temper == 60
