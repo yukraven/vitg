@@ -3,26 +3,6 @@ from unittest import mock
 import Sources.Resources.Location
 
 
-class TestCreateLocation(unittest.TestCase):
-    def setUp(self):
-        self.path = "Jsons/TestLocation.json"
-
-    def testSuccess(self):
-        location = Sources.Resources.Location.createLocation(self.path, "TestLocation")
-        dFall = 1
-        wind = 2
-        wet = 3
-        temper = 4
-        thunder = True
-        ACThunder = "Test Thunder! "
-
-        targetTuple = (dFall, wind, wet, temper, thunder, ACThunder)
-        locationTuple = (location.dFall, location.wind, location.wet,
-                         location.temper, location.thunder, location.ACthunder)
-
-        assert targetTuple == locationTuple
-
-
 class TestCall(unittest.TestCase):
     def setUp(self):
         self.location = Sources.Resources.Location.Location()

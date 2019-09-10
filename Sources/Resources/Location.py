@@ -1,20 +1,8 @@
-import json
 import logging
 from Sources.Tools.Instruments import getRandFromArray
 from Sources.Resources.Resource import Resource
 
 logger = logging.getLogger("location")
-
-
-def createLocation(jsonPath, locationName):
-    with open(jsonPath, "r") as readFile:
-        data = json.load(readFile)
-        readFile.close()
-    jsonLocation = data[locationName]
-    dictResource = {"name": locationName, **jsonLocation["dictResource"]}
-    dictLocation = jsonLocation["dictLocation"]
-    location = Location(dictResource, dictLocation)
-    return location
 
 
 class Location(Resource):
@@ -111,7 +99,7 @@ class Location(Resource):
         logger.info("Trying change downfall.")
         for index in range(len(self.toChangeDFall)):
             if self.dFall == index:
-                newDFall = self.tryChangeDFall[getRandFromArray(self.toChangeDFall[index])](self)
+                newDFall = self.tryChangeDFall[getRandFromArray(self.toChangeDFall[index], "withProbs")](self)
                 if self.dFall == newDFall:  # if nothing changed
                     return ""
                 oldDFall, self.dFall = self.dFall, newDFall
@@ -168,7 +156,7 @@ class Location(Resource):
     def getIndexAndMod(self, array, index):
         logger.info("Getting index and mod by index: %s.", index)
         if index == "random":
-            indexOfMod = getRandFromArray(array)
+            indexOfMod = getRandFromArray(array, "withProbs")
         else:
             indexOfMod = index
         mod = self.getModByIndex[indexOfMod]
@@ -183,7 +171,7 @@ class Location(Resource):
         if prob > 0:
             if self.wind < chances["wind"] or self.wet < chances["wet"] or self.temper < chances["temper"]:
                 return ""
-            if getRandFromArray([prob, 100 - prob]) == 0:
+            if getRandFromArray([prob, 100 - prob], "withProbs") == 0:
                 self.thunder = True
                 return self.ACthunder
         return ""
