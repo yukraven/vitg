@@ -46,7 +46,7 @@ class TestCreateLocation(unittest.TestCase):
         wet = 3
         temper = 4
         thunder = True
-        ACThunder = "Test Thunder! "
+        ACThunder = ["Test Thunder! "]
 
         targetTuple = (dFall, wind, wet, temper, thunder, ACThunder)
         locationTuple = (location.dFall, location.wind, location.wet,

@@ -19,9 +19,9 @@ class Location(Resource):
                      [0, 0, 100, 0],  # transitions 2->0, 2->1, 2->2, 2->3
                      [0, 0, 0, 100]],  # transitions 3->0, 3->1, 3->2, 3->3
     temperFromWhich = {"rainFreezes": 0,
-                            "rainEvaporates": 100,
-                            "hailMelts": 100,
-                            "snowMelts": 100},  # Temperature affecting downfall
+                       "rainEvaporates": 100,
+                       "hailMelts": 100,
+                       "snowMelts": 100},  # Temperature affecting downfall
     # Arrays of probabilities to change wind, wet and temperature
     toChangeWind = {"0": [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
     toChangeWet = {"0": [0, 0, 0, 100, 0, 0, 0]}  # mod -30, -20, -10, 0, +10, +20, +30
@@ -33,14 +33,14 @@ class Location(Resource):
                  {"probability": 0, "wind": 0, "wet": 0, "temper": 0}]  # Probability under conditions
 
     # String data, that returns after changing (AC) properties
-    ACdFall = [["", "", "", ""],
-               ["", "", "", ""],
-               ["", "", "", ""],
-               ["", "", "", ""]]  # After changing downfall
-    ACwind = ["", "", "", "", "", "", ""]  # After changing wind
-    ACwet = ["", "", "", "", "", "", ""]  # After changing wet
-    ACtemper = ["", "", "", "", "", "", ""]  # After changing temperature
-    ACthunder = ""  # After thunder!!!
+    ACdFall = [[[""], [""], [""], [""]],
+               [[""], [""], [""], [""]],
+               [[""], [""], [""], [""]],
+               [[""], [""], [""], [""]]]  # After changing downfall
+    ACwind = [[""], [""], [""], [""], [""], [""], [""]]  # After changing wind
+    ACwet = [[""], [""], [""], [""], [""], [""], [""]]  # After changing wet
+    ACtemper = [[""], [""], [""], [""], [""], [""], [""]]  # After changing temperature
+    ACthunder = [""]  # After thunder!!!
 
     def __init__(self, dictResource=None, dictLocation=None):
         """ Initialization """
@@ -103,7 +103,7 @@ class Location(Resource):
                 if self.dFall == newDFall:  # if nothing changed
                     return ""
                 oldDFall, self.dFall = self.dFall, newDFall
-                return self.ACdFall[oldDFall][newDFall]
+                return getRandFromArray(self.ACdFall[oldDFall][newDFall], "withValues")
 
     def changeWind(self, index):
         """ Changes wind, if changed returns string information, else - "" """
@@ -113,7 +113,7 @@ class Location(Resource):
             wind = int(wind)
             if curWind >= wind:
                 indexOfMod, mod = self.getIndexAndMod(self.toChangeWind[str(wind)], index)
-                result = self.ACwind[indexOfMod]
+                result = getRandFromArray(self.ACwind[indexOfMod], "withValues")
                 curWind += mod
                 if curWind < 0: curWind = 0
                 elif curWind > 100: curWind = 100
@@ -129,7 +129,7 @@ class Location(Resource):
             wet = int(wet)
             if curWet >= wet:
                 indexOfMod, mod = self.getIndexAndMod(self.toChangeWet[str(wet)], index)
-                result = self.ACwet[indexOfMod]
+                result = getRandFromArray(self.ACwet[indexOfMod], "withValues")
                 curWet += mod
                 if curWet < 0: curWet = 0
                 elif curWet > 100: curWet = 100
@@ -145,7 +145,7 @@ class Location(Resource):
             temper = int(temper)
             if curTemper >= temper:
                 indexOfMod, mod = self.getIndexAndMod(self.toChangeTemper[str(temper)], index)
-                result = self.ACtemper[indexOfMod]
+                result = getRandFromArray(self.ACtemper[indexOfMod], "withValues")
                 curTemper += mod
                 if curTemper < 0: curTemper = 0
                 elif curTemper > 100: curTemper = 100
@@ -173,7 +173,7 @@ class Location(Resource):
                 return ""
             if getRandFromArray([prob, 100 - prob], "withProbs") == 0:
                 self.thunder = True
-                return self.ACthunder
+                return getRandFromArray(self.ACthunder, "withValues")
         return ""
 
     def tryRain(self):
