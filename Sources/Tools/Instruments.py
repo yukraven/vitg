@@ -15,20 +15,15 @@ def getRandFromArray(array, withWhat):
             if not (isinstance(i, int) or isinstance(i, float)):
                 raise ValueError
         for i in array:
-            if i < 0 or i > 100:
+            if i < 0:
                 raise ValueIsNotProbabilityError(i)
-        sumOfProbabilities = 0
-        for i in array:
-            sumOfProbabilities += i
-        if sumOfProbabilities != 100:
-            raise SumOfProbabilitiesIsNot100Error
 
         temp = 0
         resultArray = []
         for i in array:
             temp += i
             resultArray.append(temp)             # Converting of the array into a form convenient for calculation
-        randomValue = random.randint(1, 100)
+        randomValue = random.randint(1, temp)
         for i in range(len(resultArray)):
             if randomValue <= resultArray[i]:
                 return i

@@ -7,8 +7,8 @@ class TestGetRandFromArray(unittest.TestCase):
     def testSuccess(self):
         arraysWithProbs = [[100, 0, 0, 0],
                            [0, 100, 0, 0],
-                           [0, 0, 100, 0],
-                           [0, 0, 0, 100]]
+                           [0, 0, 80, 0],
+                           [0, 0, 0, 120]]
         arraysWithValues = [["One value. "],
                             [["One value. "]],
                             [{"One": "value"}]]
@@ -44,19 +44,7 @@ class TestGetRandFromArray(unittest.TestCase):
                 self.assertRaises(ValueError, Sources.Tools.Instruments.getRandFromArray, arrays, "withProbs")
 
     def testFailIsNotProbabilities(self):
-        array1 = [101, 0]
-        array2 = [-1, 100]
+        array = [-1, 100]
 
         self.assertRaises(Sources.Tools.Exceptions.ValueIsNotProbabilityError,
-                          Sources.Tools.Instruments.getRandFromArray, array1, "withProbs")
-        self.assertRaises(Sources.Tools.Exceptions.ValueIsNotProbabilityError,
-                          Sources.Tools.Instruments.getRandFromArray, array2, "withProbs")
-
-    def testFailSumIsNot100(self):
-        array1 = [70, 40]
-        array2 = [70, 20]
-
-        self.assertRaises(Sources.Tools.Exceptions.SumOfProbabilitiesIsNot100Error,
-                          Sources.Tools.Instruments.getRandFromArray, array1, "withProbs")
-        self.assertRaises(Sources.Tools.Exceptions.SumOfProbabilitiesIsNot100Error,
-                          Sources.Tools.Instruments.getRandFromArray, array2, "withProbs")
+                          Sources.Tools.Instruments.getRandFromArray, array, "withProbs")
