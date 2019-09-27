@@ -1,5 +1,5 @@
 import random
-from Sources.Tools.Exceptions import ValueIsNotProbabilityError
+from Archive.Sources.Tools.Exceptions import ValueIsNotProbabilityError
 
 
 def getRandFromArray(array, withWhat):

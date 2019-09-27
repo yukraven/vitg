@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
-import Sources.Tools.LocationLoader
-import Sources.Resources.Location
+import Archive.Sources.Tools.LocationLoader
+import Archive.Sources.Resources.Location
 
 
 class TestGetRandomLocation(unittest.TestCase):
@@ -9,24 +9,24 @@ class TestGetRandomLocation(unittest.TestCase):
         self.path = "Jsons/TestLocation.json"
 
     def testInit(self):
-        loader = Sources.Tools.LocationLoader.LocationLoader([self.path])
+        loader = Archive.Sources.Tools.LocationLoader.LocationLoader([self.path])
         assert loader.locationsNames == [["TestLocation"]]
         assert loader.unusedLocationsNames == [["TestLocation"]]
 
     @unittest.skip("redo")
     def testGetRandomLocation(self):
-        with mock.patch.object(Sources.Resources.Location, "createLocation",
+        with mock.patch.object(Archive.Sources.Resources.Location, "createLocation",
                                return_value=None) as mockMethod:
-            loader = Sources.Tools.LocationLoader.LocationLoader([self.path])
+            loader = Archive.Sources.Tools.LocationLoader.LocationLoader([self.path])
             loader.getRandomLocation()
 
             mockMethod.assert_called_once_with("Jsons/TestLocation.json", "TestLocation")
 
     @unittest.skip("redo")
     def testGetNextRandomLocation(self):
-        with mock.patch.object(Sources.Resources.Location, "createLocation",
+        with mock.patch.object(Archive.Sources.Resources.Location, "createLocation",
                                return_value=None) as mockMethod:
-            loader = Sources.Tools.LocationLoader.LocationLoader([self.path])
+            loader = Archive.Sources.Tools.LocationLoader.LocationLoader([self.path])
             loader.unusedLocationsNames[0].append("AnotherTestLocation")
             loader.unusedLocationsNames[0].pop(0)
             loader.getNextRandomLocation()
@@ -39,7 +39,7 @@ class TestCreateLocation(unittest.TestCase):
         self.path = "Jsons/TestLocation.json"
 
     def testSuccess(self):
-        loader = Sources.Tools.LocationLoader.LocationLoader([self.path])
+        loader = Archive.Sources.Tools.LocationLoader.LocationLoader([self.path])
         location = loader.createLocation(self.path, "TestLocation")
         dFall = 1
         wind = 2

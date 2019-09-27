@@ -1,6 +1,6 @@
 import logging
-from Sources.Tools.Instruments import getRandFromArray
-from Sources.Resources.Resource import Resource
+from Archive.Sources.Tools.Instruments import getRandFromArray
+from Archive.Sources.Resources.Resource import Resource
 
 logger = logging.getLogger("location")
 
