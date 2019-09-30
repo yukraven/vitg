@@ -1,3 +1,8 @@
+import logging
+
+log = logging.getLogger("vitgity")
+
+
 class Vitgity:
     """ Base class for all objects in the game """
     name = "None"               # Unique identifier of the object
@@ -10,26 +15,37 @@ class Vitgity:
 
     def __init__(self, dictionary):
         """ Initialization """
+        log.info("initialization")
         try:
             for i in ["name", "startDescription", "description", "speed"]:
-                if i == "speed" and type(dictionary[i] == int) or type(dictionary) == str:
+                log.debug(i)
+                if i == "speed" and type(dictionary[i]) == int or not i == "speed" and type(dictionary[i]) == str:
                     pass
                 else:
-                    raise TypeError("Bad type of %s" % i)
+                    log.error("loading error - (name, startDescription, description, speed)")
+                    raise TypeError
 
             self.name = dictionary["name"]
+            log.debug(self.name)
             self.startDescription = dictionary["startDescription"]
+            log.debug(self.startDescription)
             self.description = dictionary["description"]
+            log.debug(self.description)
             self.speed = dictionary["speed"]
+            log.debug(self.speed)
 
+            self.actions = {}
             for action in dictionary["actions"]:
+                log.debug(action)
                 if action == "wait":
-                    self.
-        except (AttributeError, TypeError) as exception:
-            self.name = "ErrorLoad"
-            self.description = exception
+                    self.actions["wait"] = self.wait
+                else:
+                    log.error("loading error - actions")
+                    raise TypeError
 
-            pass
+        except (KeyError, TypeError):
+            log.error("got exception")
+            self.name = "ErrorLoad"
 
     def getUp(self):
         """ To get up on the stage. Returns startDescription """
