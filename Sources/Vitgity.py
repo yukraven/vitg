@@ -11,15 +11,24 @@ class Vitgity:
     def __init__(self, dictionary):
         """ Initialization """
         try:
+            for i in ["name", "startDescription", "description", "speed"]:
+                if i == "speed" and type(dictionary[i] == int) or type(dictionary) == str:
+                    pass
+                else:
+                    raise TypeError("Bad type of %s" % i)
+
             self.name = dictionary["name"]
             self.startDescription = dictionary["startDescription"]
             self.description = dictionary["description"]
             self.speed = dictionary["speed"]
-            self.actions = dictionary["actions"]
 
-            if "wait" in self.actions:
-                self.actions["wait"] = self.wait
-        except:
+            for action in dictionary["actions"]:
+                if action == "wait":
+                    self.
+        except (AttributeError, TypeError) as exception:
+            self.name = "ErrorLoad"
+            self.description = exception
+
             pass
 
     def getUp(self):
