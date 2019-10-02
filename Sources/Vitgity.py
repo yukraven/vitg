@@ -34,14 +34,12 @@ class Vitgity:
             self.speed = dictionary["speed"]
             log.debug(self.speed)
 
-            self.actions = {}
             for action in dictionary["actions"]:
                 log.debug(action)
-                if action == "wait":
-                    self.actions["wait"] = self.wait
-                else:
+                if type(action) != str:
                     log.error("loading error - actions")
                     raise TypeError
+            self.actions = dictionary["actions"]
 
         except (KeyError, TypeError):
             log.error("got exception")

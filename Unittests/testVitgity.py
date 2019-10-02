@@ -1,5 +1,4 @@
 import unittest
-from unittest import mock
 import Sources.Vitgity
 
 
@@ -12,7 +11,7 @@ class TestInit(unittest.TestCase):
         assert vitgity.startDescription == "2"
         assert vitgity.description == "3"
         assert vitgity.speed == 4
-        assert vitgity.actions["wait"] == vitgity.wait
+        assert vitgity.actions == ["wait"]
 
     def testBadData(self):
         dictionaries = [["name", "startDescription", "description", "speed", "actions"],
@@ -24,7 +23,6 @@ class TestInit(unittest.TestCase):
 
                         {"name": "1", "startDescription": "2", "description": "3", "speed": 4, "actions": 5},
                         {"name": "1", "startDescription": "2", "description": "3", "speed": 4, "actions": [5]},
-                        {"name": "1", "startDescription": "2", "description": "3", "speed": 4, "actions": ["None"]},
 
                         {"startDescription": "2", "description": "3", "speed": 4, "actions": ["wait"]},
                         {"name": "1", "description": "3", "speed": 4, "actions": ["wait"]},
