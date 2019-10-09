@@ -3,12 +3,11 @@ import Sources.Parser
 
 class GameMaster:
 
-    currentHeroes = [441591973]
+    currentHeroes = {"441591973": "hero"}
 
     def sendMessage(self, message, userID):
-        if userID in self.currentHeroes:
-            pass
-            # currentHero = self.currentHeroes[userID]
+        if str(userID) in self.currentHeroes:
+            currentHero = self.currentHeroes[str(userID)]
         else:
             return "Герой не задан"
         print(message)
