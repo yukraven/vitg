@@ -21,3 +21,15 @@ class TestGetHero(unittest.TestCase):
     def testUserIDIsNew(self):
         result = self.GM.getHero(self.new_user_id)
         assert self.new_hero == result
+
+
+class TestCreateHero(unittest.TestCase):
+    def setUp(self):
+        self.GM = Sources.GameMaster.GameMaster()
+        self.new_user_id = 4201
+        self.GM.current_heroes = {}
+
+    def testSuccess(self):
+        result = self.GM.createHero(self.new_user_id)
+        assert self.GM.current_heroes[str(self.new_user_id)] == result
+

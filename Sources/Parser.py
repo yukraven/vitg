@@ -17,3 +17,6 @@ class Parser:
                 except KeyError:
                     start += 1
                     end += 1
+
+    def getActions(self, message):
+        return ""

@@ -1,9 +1,10 @@
+import Sources.Hero
 import Sources.Parser
 
 
 class GameMaster:
 
-    current_heroes = {"441591973": "hero"}
+    current_heroes = {}
 
     def sendMessage(self, message, user_id):
         hero = self.getHero(user_id)
@@ -29,4 +30,6 @@ class GameMaster:
         return hero
 
     def createHero(self, user_id):
-        return ""
+        hero = Sources.Hero.Hero()
+        self.current_heroes[str(user_id)] = hero
+        return hero
