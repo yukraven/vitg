@@ -3,23 +3,13 @@ import Sources.Parser
 
 class GameMaster:
 
-    currentHeroes = {"441591973": "hero"}
+    current_heroes = {"441591973": "hero"}
 
-    def sendMessage(self, message, userID):
-        if str(userID) in self.currentHeroes:
-            currentHero = self.currentHeroes[str(userID)]
-        else:
-            return "Герой не задан"
-        print(message)
-        words = message.split(" ")
-        print(words)
+    def sendMessage(self, message, user_id):
+        hero = self.getHero(user_id)
         parser = Sources.Parser.Parser()
-        actions = []
-        for word in words:
-            print(word)
-            print(parser.getCommand(word))
-            actions.append(parser.getCommand(word))
-        print(actions)
+        actions = parser.getActions(message)
+
         result = ""
         for action in actions:
             if isinstance(action, str):
@@ -29,3 +19,14 @@ class GameMaster:
             return result
         else:
             return "Нет ответа"
+
+    def getHero(self, user_id):
+        user_id = str(user_id)
+        if user_id in self.current_heroes:
+            hero = self.current_heroes[user_id]
+        else:
+            hero = self.createHero(user_id)
+        return hero
+
+    def createHero(self, user_id):
+        return ""
