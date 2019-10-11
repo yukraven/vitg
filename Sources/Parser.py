@@ -3,7 +3,7 @@ class Parser:
              {u"люб": "love"}]
     maxSyll = 3
 
-    def getCommand(self, word):
+    def encode(self, word):
         syllLength = len(word) if len(word) < self.maxSyll else self.maxSyll
         for i in range(syllLength, 1, -1):
             start = 0
@@ -19,4 +19,29 @@ class Parser:
                     end += 1
 
     def getActions(self, message):
+        listOfWords = self.getListOfWords(message)
+        result = []
+        for word in listOfWords:
+            result.append(self.encode(word))
+        return result
+
+    def getListOfWords(self, message):
+        listWithoutSpaces = message.split(" ")
+        result = []
+        for word in listWithoutSpaces:
+            word = word.lower()
+            if word.isalnum():
+                result.append(word)
+            else:
+                tempList = self.splitByMarks(word)
+                for tempWord in tempList:
+                    result.append(tempWord)
+        return result
+
+    def splitByMarks(self, wordWithMarks):
+        marks = [".", ",", "!", "?"]
+        words= []
+        for mark in marks:
+            if wordWithMarks.count(mark) > 0:
+
         return ""
