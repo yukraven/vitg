@@ -40,8 +40,14 @@ class Parser:
 
     def splitByMarks(self, wordWithMarks):
         marks = [".", ",", "!", "?"]
-        words= []
+        words = [wordWithMarks]
         for mark in marks:
-            if wordWithMarks.count(mark) > 0:
+            tempWords = []
+            for word in words:
+                if word.count(mark) > 0:
+                    tempWords += word.split(mark)
+                elif word != "":
+                    tempWords += [word]
+            words = tempWords
 
-        return ""
+        return words

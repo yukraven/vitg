@@ -55,6 +55,11 @@ class TestGetActions(unittest.TestCase):
 
 class TestSplitByMarks(unittest.TestCase):
     def setUp(self):
-        self.word = "one.two,three!four?five"
+        self.word = "one.two,three!four?five,"
         self.result = ["one", "two", "three", "four", "five"]
         self.parser = Sources.Parser.Parser()
+
+    def testSuccess(self):
+        result = self.parser.splitByMarks(self.word)
+        difference = list(set(self.result) ^ set(result))
+        assert not difference
