@@ -1,3 +1,4 @@
+# coding: utf8
 import logging.config
 import time
 import vk_api.longpoll
@@ -8,29 +9,24 @@ logging.config.fileConfig("Logs/logging.conf")
 log = logging.getLogger("vkbot")
 
 
-def getToken():
-    try:
-        file = open("token.conf", "r")
-        return file.read()
-    except Exception as e:
-        log.critical("Не удалось получить токен: %s" % e)
-        raise
+def getSession():
+    while (True):
+        try:
+            log.info(u"открытие файла")
+            file = open("token.conf", "r")
+            log.info(u"получение токена")
+            token = file.read()
+            log.info(u"создание сессии")
+            return vk_api.vk_api.VkApi(token=token)
+        except Exception as exc:
+            log.critical(u"не удалось получить сессию: %s" % exc)
+            time.sleep(10)
 
 
-token = ""
-gotToken = False
-while(not gotToken):
-    try:
-        token = getToken()
-        gotToken = True
-    except Exception as e:
-        time.sleep(10)
-
-log.info("создание сессии")
-session = vk_api.vk_api.VkApi(token=token)
-log.info("получение апи")
+session = getSession()
+log.info(u"получение апи")
 vk = session.get_api()
-log.info("создание лонгполла")
+log.info(u"создание лонгполла")
 longpoll = vk_api.longpoll.VkLongPoll(session)
 
 log.info("создание гейм-мастера")

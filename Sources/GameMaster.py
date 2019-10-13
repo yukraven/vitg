@@ -1,5 +1,8 @@
+import logging
 import Sources.Hero
 import Sources.Parser
+
+log = logging.getLogger("gamemaster")
 
 
 class GameMaster:
@@ -22,10 +25,12 @@ class GameMaster:
             return "Нет ответа"
 
     def getHero(self, user_id):
+        log.info("получаем героя")
         user_id = str(user_id)
         if user_id in self.current_heroes:
             hero = self.current_heroes[user_id]
         else:
+            log.info("id игрока нет в базе, создаем нового героя")
             hero = self.createHero(user_id)
         return hero
 

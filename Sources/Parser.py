@@ -1,3 +1,8 @@
+import logging
+
+log = logging.getLogger("parser")
+
+
 class Parser:
     sylls = [{u"би": "attack"},
              {u"люб": "love"}]
@@ -19,6 +24,7 @@ class Parser:
                     end += 1
 
     def getActions(self, message):
+        log.info("получаем экшены из сообщения %s" % message)
         listOfWords = self.getListOfWords(message)
         result = []
         for word in listOfWords:
