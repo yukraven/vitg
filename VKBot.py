@@ -7,7 +7,25 @@ import Sources.GameMaster
 logging.config.fileConfig("Logs/logging.conf")
 log = logging.getLogger("vkbot")
 
-token = "5cad23a9faf55f4af4ac7d41e2d4a8b7c5625d2a341eb01f084369ac250b8f106b9d7e7772790570073c9"
+
+def getToken():
+    try:
+        file = open("token.conf", "r")
+        return file.read()
+    except Exception as e:
+        log.critical("Не удалось получить токен: %s" % e)
+        raise
+
+
+token = ""
+gotToken = False
+while(not gotToken):
+    try:
+        token = getToken()
+        gotToken = True
+    except Exception as e:
+        time.sleep(10)
+
 log.info("создание сессии")
 session = vk_api.vk_api.VkApi(token=token)
 log.info("получение апи")
