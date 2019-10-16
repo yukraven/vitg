@@ -8,21 +8,27 @@ log = logging.getLogger("gamemaster")
 class GameMaster:
 
     current_heroes = {}
+    current_scenes = {}
 
     def sendMessage(self, message, user_id):
         hero = self.getHero(user_id)
+        scene = self.getScene(user_id)
         parser = Sources.Parser.Parser()
         actions = parser.getActions(message)
 
-        result = ""
-        for action in actions:
-            if isinstance(action, str):
-                result += " "
-                result += action
-        if result != "":
-            return result
+        return scene.sendMessage(actions)
+
+    def getScene(self, user_id):
+        log.info("получаем сцену")
+        user_id = str(user_id)
+        if user_id in self.current_scenes:
+            return self.current_scenes[user_id]
         else:
-            return "Нет ответа"
+            log.info("для id игрока не создано ни одной сцены, создаем новую на основе его героя")
+            if user_id not in self.current_heroes:
+                log.info("по какой то причине для id игрока не сохранено героя, создадим нового")
+                self.createHero(user_id)
+            return self.createScene(self.current_heroes[user_id])
 
     def getHero(self, user_id):
         log.info("получаем героя")
@@ -38,3 +44,6 @@ class GameMaster:
         hero = Sources.Hero.Hero()
         self.current_heroes[str(user_id)] = hero
         return hero
+
+    def createScene(self, hero):
+        pass
