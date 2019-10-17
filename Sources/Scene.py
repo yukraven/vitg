@@ -1,3 +1,5 @@
 class Scene:
     def sendActions(self, actions):
-        pass
+        if not actions:
+            raise ValueError
+
