@@ -1,5 +1,5 @@
 import logging
-import Sources.Hero
+import Sources.Vitgities.Hero
 import Sources.Parser
 
 log = logging.getLogger("gamemaster")
@@ -11,7 +11,6 @@ class GameMaster:
     current_scenes = {}
 
     def sendMessage(self, message, user_id):
-        hero = self.getHero(user_id)
         scene = self.getScene(user_id)
         parser = Sources.Parser.Parser()
         actions = parser.getActions(message)
@@ -41,7 +40,7 @@ class GameMaster:
         return hero
 
     def createHero(self, user_id):
-        hero = Sources.Hero.Hero()
+        hero = Sources.Vitgities.Hero.Hero()
         self.current_heroes[str(user_id)] = hero
         return hero
 

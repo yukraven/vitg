@@ -1,12 +1,12 @@
 import unittest
-import Sources.Vitgity
+import Sources.Vitgities.Vitgity
 
 
 class TestInit(unittest.TestCase):
     def testSuccess(self):
         dictionary = {"name": "1", "startDescription": "2", "description": "3", "speed": 4, "actions": ["wait"]}
 
-        vitgity = Sources.Vitgity.Vitgity(dictionary)
+        vitgity = Sources.Vitgities.Vitgity.Vitgity(dictionary)
         assert vitgity.name == "1"
         assert vitgity.startDescription == "2"
         assert vitgity.description == "3"
@@ -34,7 +34,7 @@ class TestInit(unittest.TestCase):
 
         for i in range(len(dictionaries)):
             with self.subTest(i=i):
-                vitgity = Sources.Vitgity.Vitgity(dictionaries[i])
+                vitgity = Sources.Vitgities.Vitgity.Vitgity(dictionaries[i])
                 assert vitgity.name == "ErrorLoad"
 
 
@@ -44,7 +44,7 @@ class TestGetUp(unittest.TestCase):
         dictionary = {"name": "1", "startDescription": result,
                       "description": "3", "speed": 4, "actions": ["wait"]}
 
-        vitgity = Sources.Vitgity.Vitgity(dictionary)
+        vitgity = Sources.Vitgities.Vitgity.Vitgity(dictionary)
         assert vitgity.getUp() == result
 
 
@@ -54,7 +54,7 @@ class TestIntroduce(unittest.TestCase):
         dictionary = {"name": "1", "startDescription": "2", "description": result,
                       "speed": 4, "actions": ["wait"]}
 
-        vitgity = Sources.Vitgity.Vitgity(dictionary)
+        vitgity = Sources.Vitgities.Vitgity.Vitgity(dictionary)
         assert vitgity.introduce() == result
 
 
@@ -62,5 +62,5 @@ class TestWait(unittest.TestCase):
     def testSuccess(self):
         dictionary = {"name": "1", "startDescription": "2", "description": "3", "speed": 4, "actions": ["wait"]}
 
-        vitgity = Sources.Vitgity.Vitgity(dictionary)
+        vitgity = Sources.Vitgities.Vitgity.Vitgity(dictionary)
         assert vitgity.wait() == ""
